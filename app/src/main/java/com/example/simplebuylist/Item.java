@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
  * This Item class represents the item table in SQLite Room database.
  * Each property of this item represents a column in the Item table.
  */
-@Entity(tableName="Item")
+@Entity(tableName="ITEM_TABLE")
 public class Item {
     @PrimaryKey(autoGenerate = true)
     private int id;
