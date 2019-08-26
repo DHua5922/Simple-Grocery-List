@@ -1,5 +1,6 @@
 package com.example.simplebuylist;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -19,6 +20,9 @@ public interface ItemDao {
 
     @Delete
     Boolean delete(Item item);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE id = :id")
+    LiveData<Item> getItem(int id);
 
     /* SORT ITEMS BY NAMES */
     // sort items A - Z
