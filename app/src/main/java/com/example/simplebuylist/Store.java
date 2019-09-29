@@ -22,7 +22,7 @@ import androidx.room.PrimaryKey;
  *          be purchased at
  */
 @Entity(tableName="STORE_TABLE",
-        primaryKeys = {"firstName", "lastName"})
+        primaryKeys = {"id", "storeName"})
 public class Store {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -36,7 +36,7 @@ public class Store {
      */
     public Store(int id, String storeName) {
         setId(id);
-        setStoreName(storeName);
+        setName(storeName);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Store {
      *
      * @return  name of this store
      */
-    public String getStoreName() {
+    public String getName() {
         return storeName;
     }
 
@@ -71,7 +71,7 @@ public class Store {
      *
      * @param storeName given store name
      */
-    public void setStoreName(String storeName) {
+    public void setName(String storeName) {
         this.storeName = storeName;
     }
 }
