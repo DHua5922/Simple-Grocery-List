@@ -19,7 +19,7 @@ public interface StoreDao {
     @Delete
     Boolean delete(Store store);
 
-    @Query("SELECT storeName FROM STORE_TABLE WHERE storeName = :storeName")
+    @Query("SELECT * FROM STORE_TABLE WHERE storeName = :storeName")
     LiveData<Store> getStore(String storeName);
 
     @Query("SELECT * FROM STORE_TABLE")
