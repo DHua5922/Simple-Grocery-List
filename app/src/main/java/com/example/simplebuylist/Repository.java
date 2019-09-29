@@ -32,8 +32,8 @@ public class Repository {
         return new DeleteStoreAsyncTask(storeDao).execute(store).get();
     }
 
-    public LiveData<Store> getStore(Store store) {
-        return storeDao.getStore(store.getName());
+    public LiveData<Store> getStore(String storeName) {
+        return storeDao.getStore(storeName);
     }
 
     public List<Store> getAllStores() throws ExecutionException, InterruptedException {
