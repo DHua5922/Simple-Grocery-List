@@ -9,14 +9,39 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ItemViewModel extends AndroidViewModel {
+public class ViewModel extends AndroidViewModel {
 
-    private ItemRepository repository;
+    private Repository repository;
 
-    public ItemViewModel(@NonNull Application application) {
+    public ViewModel(@NonNull Application application) {
         super(application);
-        repository = new ItemRepository(application);
+        repository = new Repository(application);
     }
+
+
+
+
+    public Boolean insert(Store store) throws ExecutionException, InterruptedException {
+        return repository.insert(store);
+    }
+
+    public Boolean update(Store store) throws ExecutionException, InterruptedException {
+        return repository.update(store);
+    }
+
+    public Boolean delete(Store store) throws ExecutionException, InterruptedException {
+        return repository.delete(store);
+    }
+
+    public LiveData<Store> getStore(String storeName) {
+        return repository.getStore(storeName);
+    }
+
+    public List<Store> getAllStores() throws ExecutionException, InterruptedException {
+        return repository.getAllStores();
+    }
+
+
 
     public Boolean insert(Item item) throws ExecutionException, InterruptedException {
         return repository.insert(item);
@@ -30,7 +55,7 @@ public class ItemViewModel extends AndroidViewModel {
         return repository.delete(item);
     }
 
-    public LiveData<Item> getItem(Item item) throws ExecutionException, InterruptedException {
+    public LiveData<Item> getItem(Item item) {
         return repository.getItem(item);
     }
 
