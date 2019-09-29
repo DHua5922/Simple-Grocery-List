@@ -6,18 +6,46 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ItemRepository {
+public class Repository {
     private ItemDao itemDao;
+    private StoreDao storeDao;
 
-    public ItemRepository(Application application) {
-        ItemDatabase database = ItemDatabase.getInstance(application);
+    public Repository(Application application) {
+        Database database = Database.getInstance(application);
         this.itemDao = database.itemDao();
+        this.storeDao = database.storeDao();
+    }
+
+
+
+
+    /* OPERATIONS FOR STORE TABLE */
+    public Boolean insert(Store store) throws ExecutionException, InterruptedException {
+        return new InsertStoreAsyncTask(storeDao).execute(store).get();
+    }
+
+    public Boolean update(Store store) throws ExecutionException, InterruptedException {
+        return new UpdateStoreAsyncTask(storeDao).execute(store).get();
+    }
+
+    public Boolean delete(Store store) throws ExecutionException, InterruptedException {
+        return new DeleteStoreAsyncTask(storeDao).execute(store).get();
+    }
+
+    public LiveData<Store> getStore(Store store) {
+        return storeDao.getStore(store.getName());
+    }
+
+    public List<Store> getAllStores() throws ExecutionException, InterruptedException {
+        return new GetAllStoresAsyncTask(storeDao).execute().get();
     }
 
 
 
 
 
+
+    /* DEFAULT OPERATIONS FOR ITEM TABLE */
     public Boolean insert(Item item) throws ExecutionException, InterruptedException {
         return new InsertItemAsyncTask(itemDao).execute(item).get();
     }
@@ -37,7 +65,7 @@ public class ItemRepository {
 
 
 
-    /* SORT BY NAMES */
+    /* SORT ITEMS BY NAMES */
     public List<Item> sortAToZ(String storeName) throws ExecutionException, InterruptedException {
         return new SortAToZAsyncTask(itemDao).execute(storeName).get();
     }
@@ -66,7 +94,7 @@ public class ItemRepository {
 
 
 
-    /* SORT BY PRICE */
+    /* SORT ITEMS BY PRICE */
     public List<Item> sortCheapest(String storeName) throws ExecutionException, InterruptedException {
         return new SortCheapestAsyncTask(itemDao).execute(storeName).get();
     }
@@ -165,6 +193,62 @@ public class ItemRepository {
     }
 
     /* ASYNCTASKS */
+    private static class InsertStoreAsyncTask extends AsyncTask<Store, Void, Boolean> {
+        private StoreDao storeDao;
+
+        private InsertStoreAsyncTask(StoreDao storeDao) {
+            this.storeDao = storeDao;
+        }
+
+        @Override
+        protected Boolean doInBackground(Store...stores) {
+            return storeDao.insert(stores[0]);
+        }
+    }
+
+    private static class UpdateStoreAsyncTask extends AsyncTask<Store, Void, Boolean> {
+        private StoreDao storeDao;
+
+        private UpdateStoreAsyncTask(StoreDao storeDao) {
+            this.storeDao = storeDao;
+        }
+
+        @Override
+        protected Boolean doInBackground(Store...stores) {
+            return storeDao.update(stores[0]);
+        }
+    }
+
+    private static class DeleteStoreAsyncTask extends AsyncTask<Store, Void, Boolean> {
+        private StoreDao storeDao;
+
+        private DeleteStoreAsyncTask(StoreDao storeDao) {
+            this.storeDao = storeDao;
+        }
+
+        @Override
+        protected Boolean doInBackground(Store...stores) {
+            return storeDao.delete(stores[0]);
+        }
+    }
+
+    private static class GetAllStoresAsyncTask extends AsyncTask<Void, Void, List<Store>> {
+        private StoreDao storeDao;
+
+        private GetAllStoresAsyncTask(StoreDao storeDao) {
+            this.storeDao = storeDao;
+        }
+
+        @Override
+        protected List<Store> doInBackground(Void...voids) {
+            return storeDao.getAllStores();
+        }
+    }
+
+
+
+
+
     private static class InsertItemAsyncTask extends AsyncTask<Item, Void, Boolean> {
         private ItemDao itemDao;
 
