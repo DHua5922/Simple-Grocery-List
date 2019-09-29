@@ -1,13 +1,27 @@
 package com.example.simplebuylist;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 /**
- * This Item class represents the item table in SQLite Room database.
- * Each property of this item represents a column in the Item table.
+ * This class represents the table in SQLite Room database that has
+ * all of the items that the user will buy.
+ *
+ * Columns:
+ *      - id (row id)
+ *      - name (item name)
+ *      - price (item price)
+ *      - wasPurchased (item was bought or not)
+ *      - order (item's index in this table)
+ *      - storeName (store name that the item will be bought at)
  */
-@Entity(tableName="ITEM_TABLE")
+@Entity(tableName="ITEM_TABLE",
+        foreignKeys = @ForeignKey(entity = Store.class,
+                parentColumns = "storeName",
+                childColumns = "storeName",
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.CASCADE))
 public class Item {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -18,7 +32,7 @@ public class Item {
     private String storeName;
 
     /**
-     * Constructs new item with given id, name, price, order, and store name.
+     * Constructs a new item with the given id, name, price, order, and store name.
      *
      * @param id        id
      * @param name      name
@@ -36,7 +50,7 @@ public class Item {
     }
 
     /**
-     * Constructs new item with given id, name, price, indication of whether this
+     * Constructs a new item with the given id, name, price, indication of whether this
      * item was purchased or not, order, and store name.
      *
      * @param id            id
