@@ -4,22 +4,22 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
-import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Item.class}, version = 1)
-public abstract class ItemDatabase extends RoomDatabase {
+@androidx.room.Database(entities = {Item.class, Store.class}, version = 1)
+public abstract class Database extends RoomDatabase {
 
-    private static ItemDatabase instance;
+    private static Database instance;
 
     public abstract ItemDao itemDao();
+    public abstract StoreDao storeDao();
 
-    public static synchronized ItemDatabase getInstance(Context context) {
+    public static synchronized Database getInstance(Context context) {
         if(instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    ItemDatabase.class, "item_database")
+                    Database.class, "database")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
                     .build();
@@ -36,9 +36,11 @@ public abstract class ItemDatabase extends RoomDatabase {
 
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
         private ItemDao itemDao;
+        private StoreDao storeDao;
 
-        private PopulateDbAsyncTask(ItemDatabase db) {
+        private PopulateDbAsyncTask(Database db) {
             itemDao = db.itemDao();
+            storeDao = db.storeDao();
         }
 
         @Override
