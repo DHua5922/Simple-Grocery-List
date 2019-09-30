@@ -1,6 +1,7 @@
 package com.example.simplebuylist;
 
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 /**
@@ -22,21 +23,24 @@ import androidx.room.PrimaryKey;
  *          be purchased at
  */
 @Entity(tableName="STORE_TABLE",
-        primaryKeys = {"id", "storeName"})
+        indices = {@Index(value = {"storeName"}, unique = true)})
 public class Store {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     private String storeName;
+    private double totalPrice;
 
     /**
-     * Constructs the new store to buy at with the given id and store name.
+     * Constructs the new store to buy at with the given id, store name, and total price.
      *
-     * @param id        id
-     * @param storeName store name
+     * @param id            id
+     * @param storeName     store name
+     * @param totalPrice    total price of items that will be bought
      */
-    public Store(int id, String storeName) {
+    public Store(long id, String storeName, double totalPrice) {
         setId(id);
-        setName(storeName);
+        setStoreName(storeName);
+        setTotalPrice(totalPrice);
     }
 
     /**
@@ -44,7 +48,7 @@ public class Store {
      *
      * @return  id of this store
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -53,7 +57,7 @@ public class Store {
      *
      * @param id given id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -62,7 +66,7 @@ public class Store {
      *
      * @return  name of this store
      */
-    public String getName() {
+    public String getStoreName() {
         return storeName;
     }
 
@@ -71,7 +75,25 @@ public class Store {
      *
      * @param storeName given store name
      */
-    public void setName(String storeName) {
+    public void setStoreName(String storeName) {
         this.storeName = storeName;
+    }
+
+    /**
+     * Gets the total price of all the items the user will buy at this store.
+     *
+     * @return  total price of all the items the user will buy at this store
+     */
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    /**
+     * Sets the total price of all the items the user will buy at this store.
+     *
+     * @param totalPrice total price of all the items the user will buy at this store
+     */
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
