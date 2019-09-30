@@ -11,16 +11,19 @@ import java.util.List;
 @Dao
 public interface StoreDao {
     @Insert
-    Boolean insert(Store store);
+    long insert(Store store);
 
     @Update
-    Boolean update(Store store);
+    int update(Store store);
 
     @Delete
-    Boolean delete(Store store);
+    int delete(Store store);
 
     @Query("SELECT * FROM STORE_TABLE WHERE storeName = :storeName")
     LiveData<Store> getStore(String storeName);
+
+    @Query("SELECT totalPrice FROM STORE_TABLE WHERE storeName = :storeName")
+    LiveData<Double> getTotalPrice(String storeName);
 
     @Query("SELECT * FROM STORE_TABLE")
     List<Store> getAllStores();
