@@ -20,20 +20,24 @@ public class Repository {
 
 
     /* OPERATIONS FOR STORE TABLE */
-    public Boolean insert(Store store) throws ExecutionException, InterruptedException {
+    public long insert(Store store) throws ExecutionException, InterruptedException {
         return new InsertStoreAsyncTask(storeDao).execute(store).get();
     }
 
-    public Boolean update(Store store) throws ExecutionException, InterruptedException {
+    public int update(Store store) throws ExecutionException, InterruptedException {
         return new UpdateStoreAsyncTask(storeDao).execute(store).get();
     }
 
-    public Boolean delete(Store store) throws ExecutionException, InterruptedException {
+    public int delete(Store store) throws ExecutionException, InterruptedException {
         return new DeleteStoreAsyncTask(storeDao).execute(store).get();
     }
 
     public LiveData<Store> getStore(String storeName) {
         return storeDao.getStore(storeName);
+    }
+
+    public LiveData<Double> getTotalPrice(String storeName) {
+        return storeDao.getTotalPrice(storeName);
     }
 
     public List<Store> getAllStores() throws ExecutionException, InterruptedException {
@@ -46,15 +50,15 @@ public class Repository {
 
 
     /* DEFAULT OPERATIONS FOR ITEM TABLE */
-    public Boolean insert(Item item) throws ExecutionException, InterruptedException {
+    public long insert(Item item) throws ExecutionException, InterruptedException {
         return new InsertItemAsyncTask(itemDao).execute(item).get();
     }
 
-    public Boolean update(Item item) throws ExecutionException, InterruptedException {
+    public int update(Item item) throws ExecutionException, InterruptedException {
         return new UpdateItemAsyncTask(itemDao).execute(item).get();
     }
 
-    public Boolean delete(Item item) throws ExecutionException, InterruptedException {
+    public int delete(Item item) throws ExecutionException, InterruptedException {
         return new DeleteItemAsyncTask(itemDao).execute(item).get();
     }
 
@@ -193,7 +197,7 @@ public class Repository {
     }
 
     /* ASYNCTASKS */
-    private static class InsertStoreAsyncTask extends AsyncTask<Store, Void, Boolean> {
+    private static class InsertStoreAsyncTask extends AsyncTask<Store, Void, Long> {
         private StoreDao storeDao;
 
         private InsertStoreAsyncTask(StoreDao storeDao) {
@@ -201,12 +205,12 @@ public class Repository {
         }
 
         @Override
-        protected Boolean doInBackground(Store...stores) {
+        protected Long doInBackground(Store...stores) {
             return storeDao.insert(stores[0]);
         }
     }
 
-    private static class UpdateStoreAsyncTask extends AsyncTask<Store, Void, Boolean> {
+    private static class UpdateStoreAsyncTask extends AsyncTask<Store, Void, Integer> {
         private StoreDao storeDao;
 
         private UpdateStoreAsyncTask(StoreDao storeDao) {
@@ -214,12 +218,12 @@ public class Repository {
         }
 
         @Override
-        protected Boolean doInBackground(Store...stores) {
+        protected Integer doInBackground(Store...stores) {
             return storeDao.update(stores[0]);
         }
     }
 
-    private static class DeleteStoreAsyncTask extends AsyncTask<Store, Void, Boolean> {
+    private static class DeleteStoreAsyncTask extends AsyncTask<Store, Void, Integer> {
         private StoreDao storeDao;
 
         private DeleteStoreAsyncTask(StoreDao storeDao) {
@@ -227,7 +231,7 @@ public class Repository {
         }
 
         @Override
-        protected Boolean doInBackground(Store...stores) {
+        protected Integer doInBackground(Store...stores) {
             return storeDao.delete(stores[0]);
         }
     }
@@ -249,7 +253,7 @@ public class Repository {
 
 
 
-    private static class InsertItemAsyncTask extends AsyncTask<Item, Void, Boolean> {
+    private static class InsertItemAsyncTask extends AsyncTask<Item, Void, Long> {
         private ItemDao itemDao;
 
         private InsertItemAsyncTask(ItemDao itemDao) {
@@ -257,12 +261,12 @@ public class Repository {
         }
 
         @Override
-        protected Boolean doInBackground(Item...items) {
+        protected Long doInBackground(Item...items) {
             return itemDao.insert(items[0]);
         }
     }
 
-    private static class UpdateItemAsyncTask extends AsyncTask<Item, Void, Boolean> {
+    private static class UpdateItemAsyncTask extends AsyncTask<Item, Void, Integer> {
         private ItemDao itemDao;
 
         private UpdateItemAsyncTask(ItemDao itemDao) {
@@ -270,12 +274,12 @@ public class Repository {
         }
 
         @Override
-        protected Boolean doInBackground(Item...items) {
+        protected Integer doInBackground(Item...items) {
             return itemDao.update(items[0]);
         }
     }
 
-    private static class DeleteItemAsyncTask extends AsyncTask<Item, Void, Boolean> {
+    private static class DeleteItemAsyncTask extends AsyncTask<Item, Void, Integer> {
         private ItemDao itemDao;
 
         private DeleteItemAsyncTask(ItemDao itemDao) {
@@ -283,7 +287,7 @@ public class Repository {
         }
 
         @Override
-        protected Boolean doInBackground(Item...items) {
+        protected Integer doInBackground(Item...items) {
             return itemDao.delete(items[0]);
         }
     }
