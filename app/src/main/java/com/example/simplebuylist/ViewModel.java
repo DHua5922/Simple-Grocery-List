@@ -22,19 +22,23 @@ public class ViewModel extends AndroidViewModel {
 
 
     public Boolean insert(Store store) throws ExecutionException, InterruptedException {
-        return repository.insert(store);
+        return repository.insert(store) > 0;
     }
 
     public Boolean update(Store store) throws ExecutionException, InterruptedException {
-        return repository.update(store);
+        return repository.update(store) > 0;
     }
 
     public Boolean delete(Store store) throws ExecutionException, InterruptedException {
-        return repository.delete(store);
+        return repository.delete(store) > 0;
     }
 
     public LiveData<Store> getStore(String storeName) {
         return repository.getStore(storeName);
+    }
+
+    public LiveData<Double> getTotalPrice(String storeName) {
+        return repository.getTotalPrice(storeName);
     }
 
     public List<Store> getAllStores() throws ExecutionException, InterruptedException {
@@ -44,15 +48,15 @@ public class ViewModel extends AndroidViewModel {
 
 
     public Boolean insert(Item item) throws ExecutionException, InterruptedException {
-        return repository.insert(item);
+        return repository.insert(item) > 0;
     }
 
     public Boolean update(Item item) throws ExecutionException, InterruptedException {
-        return repository.update(item);
+        return repository.update(item) > 0;
     }
 
     public Boolean delete(Item item) throws ExecutionException, InterruptedException {
-        return repository.delete(item);
+        return repository.delete(item) > 0;
     }
 
     public LiveData<Item> getItem(Item item) {
