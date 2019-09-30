@@ -2,6 +2,7 @@ package com.example.simplebuylist;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 /**
@@ -17,6 +18,7 @@ import androidx.room.PrimaryKey;
  *      - storeName (store name that the item will be bought at)
  */
 @Entity(tableName="ITEM_TABLE",
+        indices = {@Index(value = {"storeName"})},
         foreignKeys = @ForeignKey(entity = Store.class,
                 parentColumns = "storeName",
                 childColumns = "storeName",
@@ -24,30 +26,12 @@ import androidx.room.PrimaryKey;
                 onUpdate = ForeignKey.CASCADE))
 public class Item {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     private String name;
     private double price;
     private int wasPurchased;
     private int order;
     private String storeName;
-
-    /**
-     * Constructs a new item with the given id, name, price, order, and store name.
-     *
-     * @param id        id
-     * @param name      name
-     * @param price     price
-     * @param order     order
-     * @param storeName store name
-     */
-    public Item(int id, String name, double price, int order, String storeName) {
-        setId(id);
-        setName(name);
-        setPrice(price);
-        setWasPurchased(0);
-        setOrder(order);
-        setStoreName(storeName);
-    }
 
     /**
      * Constructs a new item with the given id, name, price, indication of whether this
@@ -60,7 +44,7 @@ public class Item {
      * @param order         order
      * @param storeName     store name
      */
-    public Item(int id, String name, double price, int wasPurchased, int order, String storeName) {
+    public Item(long id, String name, double price, int wasPurchased, int order, String storeName) {
         setId(id);
         setName(name);
         setPrice(price);
@@ -74,7 +58,7 @@ public class Item {
      *
      * @return  id of this item
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -83,7 +67,7 @@ public class Item {
      *
      * @param id given id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
