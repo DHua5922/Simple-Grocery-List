@@ -13,16 +13,16 @@ import java.util.List;
 public interface ItemDao {
 
     @Insert
-    Boolean insert(Item item);
+    long insert(Item item);
 
     @Update
-    Boolean update(Item item);
+    int update(Item item);
 
     @Delete
-    Boolean delete(Item item);
+    int delete(Item item);
 
     @Query("SELECT * FROM ITEM_TABLE WHERE id = :id")
-    LiveData<Item> getItem(int id);
+    LiveData<Item> getItem(long id);
 
     /* SORT ITEMS BY NAMES */
     // sort items A - Z
