@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Simple Buy List</string>
+    <string name="label_isBought">Purchased?</string>
+    <string name="item_overflow_add">Add Item</string>
+    <string name="item_overflow_save_changes">Save Changes</string>
+    <string name="item_overflow_delete">Delete Item</string>
 </resources>
