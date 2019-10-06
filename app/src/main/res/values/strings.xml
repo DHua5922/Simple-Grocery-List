@@ -4,4 +4,8 @@
     <string name="item_overflow_add">Add Item</string>
     <string name="item_overflow_save_changes">Save Changes</string>
     <string name="item_overflow_delete">Delete Item</string>
+    <string name="name_input_label">Item name</string>
+    <string name="name_input_hint">Enter item name</string>
+    <string name="price_input_label">Item price</string>
+    <string name="price_input_hint">Enter item price</string>
 </resources>
