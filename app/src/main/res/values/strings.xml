@@ -8,4 +8,5 @@
     <string name="name_input_hint">Enter item name</string>
     <string name="price_input_label">Item price</string>
     <string name="price_input_hint">Enter item price</string>
+    <string name="btn_save_item_text">Save Changes</string>
 </resources>
