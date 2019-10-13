@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
+        <item
+            android:id="@+id/btn_add_item"
+            app:showAsAction="always"
+            android:title="@string/item_overflow_add" />
+    </group>
+</menu>
