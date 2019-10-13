@@ -14,13 +14,13 @@
         app:layout_constraintBottom_toBottomOf="parent">
     </CheckBox>
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/item_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/checkbox_isBought"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/img_item_action"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -36,5 +36,17 @@
             android:layout_height="wrap_content">
         </TextView>
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_item_action"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/img_more_options"
+        app:layout_constraintStart_toEndOf="@+id/item_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+    </androidx.appcompat.widget.AppCompatImageView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
