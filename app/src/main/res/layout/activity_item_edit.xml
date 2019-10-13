@@ -6,17 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ItemEdit">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/layout_item_content"/>
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar_edit_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/layout_item_content"
@@ -26,7 +20,7 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -79,8 +73,7 @@
             android:id="@+id/layout_isBought"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/item_content_margin">
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/checkbox_isBought"
@@ -97,13 +90,6 @@
 
             </TextView>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_add_save_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </Button>
 
     </LinearLayout>
 
