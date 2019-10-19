@@ -32,6 +32,10 @@ public class Repository {
         return new DeleteStoreAsyncTask(storeDao).execute(store).get();
     }
 
+    public Store getFirstStore() throws ExecutionException, InterruptedException {
+        return new GetFirstStoreAsyncTask(storeDao).execute().get();
+    }
+
     public LiveData<Store> getStore(String storeName) {
         return storeDao.getStore(storeName);
     }
@@ -233,6 +237,19 @@ public class Repository {
         @Override
         protected Integer doInBackground(Store...stores) {
             return storeDao.delete(stores[0]);
+        }
+    }
+
+    private static class GetFirstStoreAsyncTask extends AsyncTask<Void, Void, Store> {
+        private StoreDao storeDao;
+
+        private GetFirstStoreAsyncTask(StoreDao storeDao) {
+            this.storeDao = storeDao;
+        }
+
+        @Override
+        protected Store doInBackground(Void... voids) {
+            return storeDao.getFirstStore();
         }
     }
 
