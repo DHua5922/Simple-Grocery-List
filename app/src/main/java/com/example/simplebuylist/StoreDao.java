@@ -19,6 +19,9 @@ public interface StoreDao {
     @Delete
     int delete(Store store);
 
+    @Query("SELECT * FROM STORE_TABLE LIMIT 1")
+    Store getFirstStore();
+
     @Query("SELECT * FROM STORE_TABLE WHERE storeName = :storeName")
     LiveData<Store> getStore(String storeName);
 
