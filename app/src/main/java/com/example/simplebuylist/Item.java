@@ -34,7 +34,7 @@ public class Item {
     private String storeName;
 
     /**
-     * Constructs a new item with the given id, name, price, indication of whether this
+     * Constructs a new item with the given name, price, indication of whether this
      * item was purchased or not, order, and store name.
      *
      * @param id            id
