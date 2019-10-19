@@ -155,6 +155,10 @@ public class ViewModel extends AndroidViewModel {
         return repository.getUnpurchasedItems(storeName);
     }
 
+    public Store getFirstStore() throws ExecutionException, InterruptedException {
+        return repository.getFirstStore();
+    }
+
     public List<Item> getAllItems(String storeName) throws ExecutionException, InterruptedException {
         return repository.getAllItems(storeName);
     }
