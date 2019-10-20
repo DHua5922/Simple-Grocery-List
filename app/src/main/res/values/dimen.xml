@@ -6,4 +6,8 @@
     <dimen name="item_list_padding">12dp</dimen>
     <dimen name="btn_add_margin">30dp</dimen>
     <dimen name="btn_add_size">75dp</dimen>
+    <dimen name="horizontal_button_gap">4dp</dimen>
+    <dimen name="text">20sp</dimen>
+    <dimen name="below_dialog_msg_gap">20dp</dimen>
+    <dimen name="dialog_padding">8dp</dimen>
 </resources>
