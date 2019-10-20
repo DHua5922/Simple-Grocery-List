@@ -8,28 +8,48 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class ItemEdit extends AppCompatActivity {
 
     private static int REQUEST = -1;
-    public static final String EXTRA_NAME = "package com.example.simplebuylist.EXTRA_NAME";
-    public static final String EXTRA_PRICE = "package com.example.simplebuylist.EXTRA_PRICE";
-    public static final String EXTRA_ISBOUGHT = "package com.example.simplebuylist.EXTRA_ISBOUGHT";
-    private ViewModel viewModel;
+    private EditText nameInput;
+    private EditText priceInput;
+    private CheckBox isBoughtCheckBox;
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_edit);
 
+        nameInput = findViewById(R.id.name_input);
+        priceInput = findViewById(R.id.price_input);
+        isBoughtCheckBox = findViewById(R.id.checkbox_isBought);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
 
-        Intent request = new Intent();
-        REQUEST = request.getIntExtra(MainActivity.EXTRA_ACTION_REQUEST, 0);
+        Intent request = getIntent();
+        if(request.hasExtra(ItemAdapter.EXTRA_ITEM_ID)) {
+            REQUEST = ItemAdapter.EDIT_ITEM_REQUEST;
+            loadItemContent();
+        } else {
+            REQUEST = MainActivity.ADD_ITEM_REQUEST;
+        }
+
+        ImageButton backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent back = new Intent(ItemEdit.this, MainActivity.class);
+                startActivity(back);
+            }
+        });
     }
 
     @Override
@@ -50,10 +70,11 @@ public class ItemEdit extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem selectedItem) {
 
         try {
-            if (selectedItem.getItemId() == R.id.btn_add_item) {
-                addNote();
-                return true;
+            if (selectedItem.getItemId() == R.id.btn_add_item ||
+                    selectedItem.getItemId() == R.id.overflow_save_changes) {
+                finishItem();
             }
+            return true;
         } catch (IllegalArgumentException e) {
             Text.printMessage(this, "Invalid price");
         }
@@ -61,11 +82,7 @@ public class ItemEdit extends AppCompatActivity {
         return super.onOptionsItemSelected(selectedItem);
     }
 
-    private void addNote() {
-        EditText nameInput = findViewById(R.id.name_input);
-        EditText priceInput = findViewById(R.id.price_input);
-        CheckBox isBoughtCheckBox = findViewById(R.id.checkbox_isBought);
-
+    private void finishItem() {
         String name = nameInput.getText().toString();
         if(name.isEmpty()) {
             Text.printMessage(this, "Name cannot be empty");
@@ -77,12 +94,23 @@ public class ItemEdit extends AppCompatActivity {
             int isBought = isBoughtCheckBox.isChecked() ? IS_BOUGHT : NOT_BOUGHT;
 
             Intent data = new Intent();
-            data.putExtra(EXTRA_NAME, name);
-            data.putExtra(EXTRA_PRICE, price);
-            data.putExtra(EXTRA_ISBOUGHT, isBought);
+            if(REQUEST == ItemAdapter.EDIT_ITEM_REQUEST) {
+                data.putExtra(ItemAdapter.EXTRA_ITEM_ID, id);
+            }
+            data.putExtra(ItemAdapter.EXTRA_ITEM_NAME, name);
+            data.putExtra(ItemAdapter.EXTRA_ITEM_PRICE, price);
+            data.putExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, isBought);
 
             setResult(RESULT_OK, data);
             finish();
         }
+    }
+
+    private void loadItemContent() {
+        Intent request = getIntent();
+        id = request.getLongExtra(ItemAdapter.EXTRA_ITEM_ID, 0);
+        nameInput.setText(request.getStringExtra(ItemAdapter.EXTRA_ITEM_NAME));
+        priceInput.setText(String.valueOf(request.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0)));
+        isBoughtCheckBox.setChecked(request.getBooleanExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, false));
     }
 }
