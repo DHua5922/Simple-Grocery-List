@@ -6,6 +6,74 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/light_grey</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="AddButton">
+        <item name="android:src">@drawable/img_add_item</item>
+        <item name="android:layout_width">@dimen/btn_add_size</item>
+        <item name="android:layout_height">@dimen/btn_add_size</item>
+        <item name="android:layout_marginRight">@dimen/btn_add_margin</item>
+        <item name="android:layout_marginEnd">@dimen/btn_add_margin</item>
+        <item name="android:layout_marginBottom">@dimen/btn_add_margin</item>
+    </style>
+
+    <style name="ItemList">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginStart">@dimen/item_list_padding</item>
+        <item name="android:layout_marginLeft">@dimen/item_list_padding</item>
+        <item name="android:layout_marginEnd">@dimen/item_list_padding</item>
+        <item name="android:layout_marginRight">@dimen/item_list_padding</item>
+    </style>
+
+    <style name="ItemContent">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:padding">@dimen/item_content_padding</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="ListLabel" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Input">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">textAutoComplete</item>
+    </style>
+
+    <style name="ItemLabelAndInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginBottom">@dimen/item_content_margin</item>
+    </style>
+
+    <style name="CheckBox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="BackIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:src">@drawable/ic_back</item>
+        <item name="android:background">@color/transparent</item>
     </style>
 
 </resources>
