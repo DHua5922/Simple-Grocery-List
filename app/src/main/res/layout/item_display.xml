@@ -2,6 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/item_display_padding"
+    android:padding="@dimen/item_display_padding"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <CheckBox
@@ -33,7 +36,8 @@
         <TextView
             android:id="@+id/priceView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textStyle="italic">
         </TextView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
