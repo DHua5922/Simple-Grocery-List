@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewModel viewModel;
     private ItemAdapter itemAdapter;
-
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -62,9 +62,15 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView itemListView = findViewById(R.id.item_list);
             itemListView.setLayoutManager(new LinearLayoutManager(this));
 
-            itemAdapter = new ItemAdapter(this, viewModel);
-            itemAdapter.setItemList((ArrayList<Item>) viewModel.getAllItems(STORE_NAME));
+            itemAdapter = new ItemAdapter(this, viewModel, this);
             itemListView.setAdapter(itemAdapter);
+            //itemAdapter.setItemList((ArrayList<Item>) viewModel.getAllItems(STORE_NAME));
+            viewModel.getAllItems(STORE_NAME).observe(this, new Observer<List<Item>>() {
+                @Override
+                public void onChanged(List<Item> items) {
+                    itemAdapter.setItemList((ArrayList<Item>) items);
+                }
+            });
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
