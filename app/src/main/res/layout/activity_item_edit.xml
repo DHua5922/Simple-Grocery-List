@@ -9,37 +9,27 @@
     <include
         android:id="@+id/toolbar_layout"
         layout="@layout/toolbar_edit_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/ToolbarStyle"/>
 
     <LinearLayout
         android:id="@+id/layout_item_content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="@dimen/item_content_padding"
-        android:orientation="vertical"
+        style="@style/ItemContent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/item_content_margin">
+            style="@style/ItemLabelAndInput">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Label"
                 android:text="@string/name_input_label">
             </TextView>
 
             <EditText
                 android:id="@+id/name_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
+                style="@style/Input"
                 android:importantForAutofill="no"
                 android:hint="@string/name_input_hint">
             </EditText>
@@ -47,49 +37,27 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/item_content_margin">
+            style="@style/ItemLabelAndInput">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Label"
                 android:text="@string/price_input_label">
             </TextView>
 
             <EditText
                 android:id="@+id/price_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
+                style="@style/Input"
                 android:importantForAutofill="no"
                 android:hint="@string/price_input_hint">
             </EditText>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_isBought"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkbox_isBought"
-                android:text="@string/label_isBought"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-            </CheckBox>
-
-            <TextView
-                android:id="@+id/labelView_isBought"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-            </TextView>
-        </LinearLayout>
+        <CheckBox
+            android:id="@+id/checkbox_isBought"
+            android:text="@string/label_isBought"
+            style="@style/CheckBox">
+        </CheckBox>
 
     </LinearLayout>
 

@@ -5,8 +5,13 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/ToolbarStyle">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            style="@style/BackIcon">
+        </ImageButton>
+
     </androidx.appcompat.widget.Toolbar>
 
 </LinearLayout>
