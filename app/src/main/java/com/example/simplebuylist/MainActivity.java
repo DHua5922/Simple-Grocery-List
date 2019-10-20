@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -17,11 +20,11 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
 
     public static final int ADD_ITEM_REQUEST = 0;
-    public static final int EDIT_ITEM_REQUEST = 1;
-    public static final String EXTRA_ACTION_REQUEST = "com.example.simplebuylist.EXTRA_ACTION_REQUEST";
+    public static String STORE_NAME = "Unnamed";
+
     private ViewModel viewModel;
     private ItemAdapter itemAdapter;
-    public static String STORE_NAME = "Unnamed";
+
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -35,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(STORE_NAME);
+        TextView listLabelView = findViewById(R.id.list_label);
+        listLabelView.setText(STORE_NAME);
 
         ImageView addItemBtn = findViewById(R.id.btn_add_item);
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ItemEdit.class);
-                intent.putExtra(EXTRA_ACTION_REQUEST, ADD_ITEM_REQUEST);
                 startActivityForResult(intent, ADD_ITEM_REQUEST);
             }
         });
@@ -68,26 +71,61 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         // Example of a call to a native method
         //tv.setText(stringFromJNI());
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_list_actions, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem selectedItem) {
+
+        switch(selectedItem.getItemId()) {
+            case R.id.option_open_list:
+                break;
+            case R.id.option_rename_list:
+                break;
+            case R.id.option_delete_list:
+                break;
+        }
+
+        return super.onOptionsItemSelected(selectedItem);
+    }
+
+
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String name = data.getStringExtra(ItemEdit.EXTRA_NAME);
-        double price = data.getDoubleExtra(ItemEdit.EXTRA_PRICE, 0);
-        int isBought = data.getIntExtra(ItemEdit.EXTRA_ISBOUGHT, 0);
-
         try {
             if(requestCode == ADD_ITEM_REQUEST && resultCode == RESULT_OK) {
+                String name = data.getStringExtra(ItemAdapter.EXTRA_ITEM_NAME);
+                double price = data.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0);
+                int isBought = data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0);
                 Item item = new Item(0, name, price, isBought, itemAdapter.getHighestOrder(), STORE_NAME);
+
                 if(itemAdapter.add(item))
                     Text.printMessage(this, name + " has been added");
                 else
                     Text.printMessage(this, name + " could not be added");
+            } else if(requestCode == ItemAdapter.EDIT_ITEM_REQUEST && resultCode == RESULT_OK) {
+                long id = data.getLongExtra(ItemAdapter.EXTRA_ITEM_ID, 0);
+                String name = data.getStringExtra(ItemAdapter.EXTRA_ITEM_NAME);
+                double price = data.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0);
+                int isBought = data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0);
+                Item item = new Item(id, name, price, isBought, itemAdapter.getHighestOrder(), STORE_NAME);
+
+                if(itemAdapter.update(item, itemAdapter.getClickedMenuPos()))
+                    Text.printMessage(this, "Changes to " + name + " has been saved");
+                else
+                    Text.printMessage(this, "Changes to " + name + " could not be saved");
             }
         } catch (ExecutionException e) {
             e.printStackTrace();
