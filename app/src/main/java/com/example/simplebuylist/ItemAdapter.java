@@ -1,40 +1,51 @@
 package com.example.simplebuylist;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> implements PopupMenu.OnMenuItemClickListener {
 
     private ArrayList<Item> itemList;
     private ViewModel viewModel;
     private MainActivity context;
+
+    public static final String EXTRA_ITEM_ID = "com.example.simplebuylist.EXTRA_ITEM_ID";
+    public static final String EXTRA_ITEM_NAME = "com.example.simplebuylist.EXTRA_ITEM_NAME";
+    public static final String EXTRA_ITEM_PRICE = "com.example.simplebuylist.EXTRA_ITEM_PRICE";
+    public static final String EXTRA_ITEM_IS_BOUGHT = "com.example.simplebuylist.EXTRA_ITEM_IS_BOUGHT";
+    public static final int EDIT_ITEM_REQUEST = 1;
+    private int clickedMenuPos = -1;
 
     public ItemAdapter(MainActivity context, ViewModel viewModel) {
         this.context = context;
         this.viewModel = viewModel;
     }
 
-    public static class ItemHolder extends RecyclerView.ViewHolder {
+    public class ItemHolder extends RecyclerView.ViewHolder {
         private CheckBox checkBox;
         private TextView itemNameView;
         private TextView itemPriceView;
+        private ImageView btnItemActions;
 
         public ItemHolder(View itemDisplay) {
             super(itemDisplay);
             this.checkBox = itemDisplay.findViewById(R.id.checkbox_isBought);
             this.itemNameView = itemDisplay.findViewById(R.id.nameView);
             this.itemPriceView = itemDisplay.findViewById(R.id.priceView);
-
+            this.btnItemActions = itemDisplay.findViewById(R.id.img_item_action);
         }
 
         public CheckBox getCheckBox() {
@@ -48,6 +59,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         public TextView getItemPriceView() {
             return itemPriceView;
         }
+
+        public ImageView getItemActionsView() {return btnItemActions; }
     }
 
     @NonNull
@@ -60,18 +73,31 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         //onBindCheckbox();
-        onBindNameView(holder, position);
-        onBindPriceView(holder, position);
+        onBindNameView(holder);
+        onBindPriceView(holder);
+        onBindAction(holder);
     }
 
-    public void onBindNameView(ItemHolder holder, int position) {
+    public void onBindNameView(ItemHolder holder) {
+        int position = holder.getAdapterPosition();
         TextView itemNameView = holder.getItemNameView();
         itemNameView.setText(itemList.get(position).getName());
     }
 
-    public void onBindPriceView(ItemHolder holder, int position) {
+    public void onBindPriceView(ItemHolder holder) {
+        int position = holder.getAdapterPosition();
         TextView itemPriceView = holder.getItemPriceView();
-        itemPriceView.setText("" + itemList.get(position).getPrice());
+        itemPriceView.setText(Text.formatPrice(itemList.get(position).getPrice()));
+    }
+
+    public void onBindAction(final ItemHolder holder) {
+        holder.btnItemActions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickedMenuPos = holder.getAdapterPosition();
+                showMenu(view);
+            }
+        });
     }
 
     @Override
@@ -89,6 +115,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         return false;
     }
 
+    public boolean update(Item item, int position) throws ExecutionException, InterruptedException {
+        if(viewModel.update(item)) {
+            itemList.set(position, item);
+            notifyItemChanged(position);
+            return true;
+        }
+
+        return false;
+    }
+
     public int getHighestOrder() {
         return itemList.size() == 0 ? 0 : itemList.get(itemList.size() - 1).getOrder();
     }
@@ -96,5 +132,33 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     public void setItemList(ArrayList<Item> itemList) {
         this.itemList = itemList;
         notifyDataSetChanged();
+    }
+
+    public void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(context, v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.menu_item_actions);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_edit_item:
+                Intent intent = new Intent(context, ItemEdit.class);
+                Item chosenItem = itemList.get(clickedMenuPos);
+                intent.putExtra(EXTRA_ITEM_ID, chosenItem.getId());
+                intent.putExtra(EXTRA_ITEM_NAME, chosenItem.getName());
+                intent.putExtra(EXTRA_ITEM_PRICE, chosenItem.getPrice());
+                intent.putExtra(EXTRA_ITEM_IS_BOUGHT, chosenItem.getWasPurchased());
+                context.startActivityForResult(intent, EDIT_ITEM_REQUEST);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public int getClickedMenuPos() {
+        return clickedMenuPos;
     }
 }
