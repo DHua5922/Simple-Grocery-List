@@ -1,5 +1,6 @@
 package com.example.simplebuylist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     private ArrayList<Item> itemList;
     private ViewModel viewModel;
     private MainActivity context;
+    private LifecycleOwner lifecycleOwner;
 
     public static final String EXTRA_ITEM_ID = "com.example.simplebuylist.EXTRA_ITEM_ID";
     public static final String EXTRA_ITEM_NAME = "com.example.simplebuylist.EXTRA_ITEM_NAME";
@@ -29,9 +32,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     public static final int EDIT_ITEM_REQUEST = 1;
     private int clickedMenuPos = -1;
 
-    public ItemAdapter(MainActivity context, ViewModel viewModel) {
+    public ItemAdapter(MainActivity context, ViewModel viewModel, LifecycleOwner lifecycleOwner) {
         this.context = context;
         this.viewModel = viewModel;
+        this.lifecycleOwner = lifecycleOwner;
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
@@ -78,16 +82,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
         onBindAction(holder);
     }
 
-    public void onBindNameView(ItemHolder holder) {
+    public void onBindNameView(final ItemHolder holder) {
         int position = holder.getAdapterPosition();
-        TextView itemNameView = holder.getItemNameView();
-        itemNameView.setText(itemList.get(position).getName());
+        Item item = itemList.get(position);
+        itemList.set(position, item);
+        holder.getItemNameView().setText(item.getName());
     }
 
-    public void onBindPriceView(ItemHolder holder) {
+    public void onBindPriceView(final ItemHolder holder) {
         int position = holder.getAdapterPosition();
-        TextView itemPriceView = holder.getItemPriceView();
-        itemPriceView.setText(Text.formatPrice(itemList.get(position).getPrice()));
+        Item item = itemList.get(position);
+        itemList.set(position, item);
+        holder.getItemPriceView().setText(Text.formatPrice(item.getPrice()));
+
     }
 
     public void onBindAction(final ItemHolder holder) {
@@ -102,7 +109,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return itemList == null ? 0 : itemList.size();
     }
 
     public boolean add(Item item) throws ExecutionException, InterruptedException {
@@ -121,7 +128,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
             notifyItemChanged(position);
             return true;
         }
+        return false;
+    }
 
+    public boolean delete(int position) throws ExecutionException, InterruptedException {
+        if(viewModel.delete(itemList.get(position))) {
+            itemList.remove(position);
+            notifyItemRemoved(position);
+            return true;
+        }
         return false;
     }
 
@@ -152,6 +167,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
                 intent.putExtra(EXTRA_ITEM_PRICE, chosenItem.getPrice());
                 intent.putExtra(EXTRA_ITEM_IS_BOUGHT, chosenItem.getWasPurchased());
                 context.startActivityForResult(intent, EDIT_ITEM_REQUEST);
+                return true;
+            case R.id.option_delete_item:
+                Dialog.confirmDeletion(context, context.getString(R.string.confirmation_deletion_msg), this, clickedMenuPos);
                 return true;
             default:
                 return false;
