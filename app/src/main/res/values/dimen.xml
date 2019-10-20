@@ -2,4 +2,8 @@
 <resources>
     <dimen name="item_content_padding">20dp</dimen>
     <dimen name="item_content_margin">20dp</dimen>
+    <dimen name="item_display_padding">8dp</dimen>
+    <dimen name="item_list_padding">12dp</dimen>
+    <dimen name="btn_add_margin">30dp</dimen>
+    <dimen name="btn_add_size">75dp</dimen>
 </resources>
