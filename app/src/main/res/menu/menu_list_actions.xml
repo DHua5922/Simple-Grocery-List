@@ -4,15 +4,18 @@
     <group>
         <item
             android:id="@+id/option_open_list"
-            app:showAsAction="never"
-            android:title="@string/open_list" />
+            android:icon="@drawable/icon_open"
+            android:title="@string/open_list"
+            app:showAsAction="ifRoom|withText"/>
         <item
             android:id="@+id/option_rename_list"
-            app:showAsAction="never"
-            android:title="@string/rename_list" />
+            android:icon="@drawable/icon_edit"
+            android:title="@string/rename_list"
+            app:showAsAction="ifRoom|withText"/>
         <item
             android:id="@+id/option_delete_list"
-            app:showAsAction="never"
-            android:title="@string/delete_list" />
+            android:icon="@drawable/icon_delete"
+            android:title="@string/delete_list"
+            app:showAsAction="ifRoom|withText"/>
     </group>
 </menu>

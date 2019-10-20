@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group>
         <item android:id="@+id/overflow_save_changes"
-            android:title="@string/item_overflow_save_changes" />
+            android:icon="@drawable/icon_save"
+            android:title="@string/item_overflow_save_changes"
+            app:showAsAction="ifRoom"/>
         <item android:id="@+id/overflow_delete"
-            android:title="@string/item_overflow_delete" />
+            android:icon="@drawable/icon_delete"
+            android:title="@string/item_overflow_delete"
+            app:showAsAction="ifRoom"/>
     </group>
 </menu>

@@ -5,12 +5,14 @@
     <group>
         <item
             android:id="@+id/option_edit_item"
-            app:showAsAction="never"
-            android:title="@string/option_edit_item" />
+            android:icon="@drawable/icon_edit"
+            android:title="@string/option_edit_item"
+            app:showAsAction="ifRoom"/>
         <item
             android:id="@+id/option_delete_item"
-            app:showAsAction="never"
-            android:title="@string/option_delete_item" />
+            android:icon="@drawable/icon_delete"
+            android:title="@string/option_delete_item"
+            app:showAsAction="ifRoom"/>
     </group>
 
 </menu>
