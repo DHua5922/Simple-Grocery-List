@@ -6,37 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/item_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </androidx.appcompat.widget.Toolbar>
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/list_toolbar"
+        style="@style/ToolbarStyle"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/item_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        style="@style/ItemList"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
         tools:listitem="@layout/item_display">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
         android:id="@+id/btn_add_item"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/img_add_item"
+        style="@style/AddButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"></ImageView>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
