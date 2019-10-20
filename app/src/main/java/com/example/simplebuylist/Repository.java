@@ -168,7 +168,7 @@ public class Repository {
         return new GetUnpurchasedItemsAsyncTask(itemDao).execute(storeName).get();
     }
 
-    public List<Item> getAllItems(String storeName) throws ExecutionException, InterruptedException {
+    public LiveData<List<Item>> getAllItems(String storeName) throws ExecutionException, InterruptedException {
         return new GetAllItemsAsyncTask(itemDao).execute(storeName).get();
     }
 
@@ -590,7 +590,7 @@ public class Repository {
         }
     }
 
-    private static class GetAllItemsAsyncTask extends AsyncTask<String, Void, List<Item>> {
+    private static class GetAllItemsAsyncTask extends AsyncTask<String, Void, LiveData<List<Item>>> {
         private ItemDao itemDao;
 
         private GetAllItemsAsyncTask(ItemDao itemDao) {
@@ -598,7 +598,7 @@ public class Repository {
         }
 
         @Override
-        protected List<Item> doInBackground(String...strings) {
+        protected LiveData<List<Item>> doInBackground(String...strings) {
             return itemDao.getAllItems(strings[0]);
         }
     }

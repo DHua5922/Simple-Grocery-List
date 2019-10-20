@@ -159,7 +159,7 @@ public class ViewModel extends AndroidViewModel {
         return repository.getFirstStore();
     }
 
-    public List<Item> getAllItems(String storeName) throws ExecutionException, InterruptedException {
+    public LiveData<List<Item>> getAllItems(String storeName) throws ExecutionException, InterruptedException {
         return repository.getAllItems(storeName);
     }
 

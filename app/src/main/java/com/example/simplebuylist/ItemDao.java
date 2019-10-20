@@ -134,5 +134,5 @@ public interface ItemDao {
 
     // get all items in given store
     @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName")
-    List<Item> getAllItems(String storeName);
+    LiveData<List<Item>> getAllItems(String storeName);
 }
