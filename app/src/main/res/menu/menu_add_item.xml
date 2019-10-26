@@ -4,7 +4,7 @@
     <group>
         <item
             android:id="@+id/btn_add_item"
-            android:icon="@drawable/icon_add"
+            android:icon="@drawable/icon_save"
             android:title="@string/item_overflow_add"
             app:showAsAction="ifRoom|withText"/>
     </group>
