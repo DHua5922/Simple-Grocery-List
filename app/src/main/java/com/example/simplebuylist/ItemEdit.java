@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class ItemEdit extends AppCompatActivity {
 
@@ -29,10 +30,6 @@ public class ItemEdit extends AppCompatActivity {
         priceInput = findViewById(R.id.price_input);
         isBoughtCheckBox = findViewById(R.id.checkbox_isBought);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-
         Intent request = getIntent();
         if(request.hasExtra(ItemAdapter.EXTRA_ITEM_ID)) {
             REQUEST = ItemAdapter.EDIT_ITEM_REQUEST;
@@ -42,6 +39,11 @@ public class ItemEdit extends AppCompatActivity {
         } else {
             REQUEST = MainActivity.ADD_ITEM_REQUEST;
         }
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        TextView labelActionView = findViewById(R.id.label_action);
+        labelActionView.setText(request.getStringExtra(ItemAdapter.EXTRA_ACTION));
 
         ImageButton backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
