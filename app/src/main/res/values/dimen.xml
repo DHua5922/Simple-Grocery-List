@@ -10,4 +10,5 @@
     <dimen name="text">20sp</dimen>
     <dimen name="below_dialog_msg_gap">20dp</dimen>
     <dimen name="dialog_padding">8dp</dimen>
+    <dimen name="img_padding">15dp</dimen>
 </resources>
