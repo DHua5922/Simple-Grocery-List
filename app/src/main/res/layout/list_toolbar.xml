@@ -9,7 +9,7 @@
 
         <TextView
             android:id="@+id/list_label"
-            style="@style/ListLabel">
+            style="@style/ToolbarLabel">
         </TextView>
 
     </androidx.appcompat.widget.Toolbar>
