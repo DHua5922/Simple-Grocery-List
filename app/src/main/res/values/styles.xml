@@ -40,15 +40,14 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="ListLabel" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="Label">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ToolbarLabel" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="Input">
@@ -74,6 +73,9 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:src">@drawable/ic_back</item>
         <item name="android:background">@color/transparent</item>
+        <item name="android:paddingBottom">@dimen/img_padding</item>
+        <item name="android:paddingRight">@dimen/img_padding</item>
+        <item name="android:paddingTop">@dimen/img_padding</item>
     </style>
 
     <style name="ConfirmationMessage">
