@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 public class Dialog {
 
-    public static void confirmDeletion (final Context context, String message, final ItemAdapter itemAdapter, final int clickedMenuPos) {
+    public static void confirmDeletion (final Context context, String message, final ItemAdapter itemAdapter, final Item item) {
 
         View dialogLayout = LayoutInflater.from(context).inflate(R.layout.dialog_confirmation, null);
         TextView msgView = dialogLayout.findViewById(R.id.message_view);
@@ -28,7 +28,7 @@ public class Dialog {
             @Override
             public void onClick(View view) {
                 try {
-                    if(itemAdapter.delete(clickedMenuPos)) {
+                    if(itemAdapter.delete(item)) {
                         Text.printMessage(context, "Item deleted");
                     }
                     else {
