@@ -1,6 +1,5 @@
 package com.example.simplebuylist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -23,8 +21,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     private ArrayList<Item> itemList;
     private ViewModel viewModel;
     private MainActivity context;
-    private LifecycleOwner lifecycleOwner;
 
+    public static final String EXTRA_ACTION = "com.example.simplebuylist.EXTRA_ACTION";
     public static final String EXTRA_ITEM_ID = "com.example.simplebuylist.EXTRA_ITEM_ID";
     public static final String EXTRA_ITEM_NAME = "com.example.simplebuylist.EXTRA_ITEM_NAME";
     public static final String EXTRA_ITEM_PRICE = "com.example.simplebuylist.EXTRA_ITEM_PRICE";
@@ -32,10 +30,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     public static final int EDIT_ITEM_REQUEST = 1;
     private int clickedMenuPos = -1;
 
-    public ItemAdapter(MainActivity context, ViewModel viewModel, LifecycleOwner lifecycleOwner) {
+    public ItemAdapter(MainActivity context, ViewModel viewModel) {
         this.context = context;
         this.viewModel = viewModel;
-        this.lifecycleOwner = lifecycleOwner;
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
@@ -113,31 +110,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     }
 
     public boolean add(Item item) throws ExecutionException, InterruptedException {
-        if(viewModel.insert(item)) {
-            itemList.add(item);
-            notifyItemInserted(getItemCount() - 1);
-            return true;
-        }
-
-        return false;
+        return viewModel.insert(item);
     }
 
-    public boolean update(Item item, int position) throws ExecutionException, InterruptedException {
-        if(viewModel.update(item)) {
-            itemList.set(position, item);
-            notifyItemChanged(position);
-            return true;
-        }
-        return false;
+    public boolean update(Item item) throws ExecutionException, InterruptedException {
+        return viewModel.update(item);
     }
 
-    public boolean delete(int position) throws ExecutionException, InterruptedException {
-        if(viewModel.delete(itemList.get(position))) {
-            itemList.remove(position);
-            notifyItemRemoved(position);
-            return true;
-        }
-        return false;
+    public boolean delete(Item item) throws ExecutionException, InterruptedException {
+        return viewModel.delete(item);
     }
 
     public int getHighestOrder() {
@@ -158,10 +139,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+        Item chosenItem = itemList.get(clickedMenuPos);
         switch (item.getItemId()) {
             case R.id.option_edit_item:
                 Intent intent = new Intent(context, ItemEdit.class);
-                Item chosenItem = itemList.get(clickedMenuPos);
+                intent.putExtra(EXTRA_ACTION, "Editing " + chosenItem.getName());
                 intent.putExtra(EXTRA_ITEM_ID, chosenItem.getId());
                 intent.putExtra(EXTRA_ITEM_NAME, chosenItem.getName());
                 intent.putExtra(EXTRA_ITEM_PRICE, chosenItem.getPrice());
@@ -169,14 +151,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
                 context.startActivityForResult(intent, EDIT_ITEM_REQUEST);
                 return true;
             case R.id.option_delete_item:
-                Dialog.confirmDeletion(context, context.getString(R.string.confirmation_deletion_msg), this, clickedMenuPos);
+                Dialog.confirmDeletion(context, context.getString(R.string.confirmation_deletion_msg), this, chosenItem);
                 return true;
             default:
                 return false;
         }
-    }
-
-    public int getClickedMenuPos() {
-        return clickedMenuPos;
     }
 }
