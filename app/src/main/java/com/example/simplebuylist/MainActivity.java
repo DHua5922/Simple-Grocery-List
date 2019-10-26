@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int ADD_ITEM_REQUEST = 0;
     public static String STORE_NAME = "Unnamed";
 
-    private ViewModel viewModel;
     private ItemAdapter itemAdapter;
 
     // Used to load the 'native-lib' library on application startup.
@@ -46,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ItemEdit.class);
+                intent.putExtra(ItemAdapter.EXTRA_ACTION, "Add Item");
                 startActivityForResult(intent, ADD_ITEM_REQUEST);
             }
         });
 
-        viewModel = new ViewModel(getApplication());
+        ViewModel viewModel = new ViewModel(getApplication());
         viewModel.getStore(STORE_NAME).observe(this, new Observer<Store>() {
             @Override
             public void onChanged(Store store) {
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView itemListView = findViewById(R.id.item_list);
             itemListView.setLayoutManager(new LinearLayoutManager(this));
 
-            itemAdapter = new ItemAdapter(this, viewModel, this);
+            itemAdapter = new ItemAdapter(this, viewModel);
             itemListView.setAdapter(itemAdapter);
             //itemAdapter.setItemList((ArrayList<Item>) viewModel.getAllItems(STORE_NAME));
             viewModel.getAllItems(STORE_NAME).observe(this, new Observer<List<Item>>() {
@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_list_actions, menu);
-
         return true;
     }
 
@@ -111,27 +110,28 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
-            if(requestCode == ADD_ITEM_REQUEST && resultCode == RESULT_OK) {
+            if(resultCode == RESULT_OK) {
                 String name = data.getStringExtra(ItemAdapter.EXTRA_ITEM_NAME);
-                double price = data.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0);
-                int isBought = data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0);
-                Item item = new Item(0, name, price, isBought, itemAdapter.getHighestOrder(), STORE_NAME);
+                Item item = new Item(
+                        data.getLongExtra(ItemAdapter.EXTRA_ITEM_ID, 0),
+                        name,
+                        data.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0),
+                        data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0),
+                        itemAdapter.getHighestOrder(),
+                        STORE_NAME
+                );
 
-                if(itemAdapter.add(item))
-                    Text.printMessage(this, name + " has been added");
-                else
-                    Text.printMessage(this, name + " could not be added");
-            } else if(requestCode == ItemAdapter.EDIT_ITEM_REQUEST && resultCode == RESULT_OK) {
-                long id = data.getLongExtra(ItemAdapter.EXTRA_ITEM_ID, 0);
-                String name = data.getStringExtra(ItemAdapter.EXTRA_ITEM_NAME);
-                double price = data.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0);
-                int isBought = data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0);
-                Item item = new Item(id, name, price, isBought, itemAdapter.getHighestOrder(), STORE_NAME);
-
-                if(itemAdapter.update(item, itemAdapter.getClickedMenuPos()))
-                    Text.printMessage(this, "Changes to " + name + " has been saved");
-                else
-                    Text.printMessage(this, "Changes to " + name + " could not be saved");
+                if (requestCode == ADD_ITEM_REQUEST) {
+                    if (itemAdapter.add(item))
+                        Text.printMessage(this, name + " has been added");
+                    else
+                        Text.printMessage(this, name + " could not be added");
+                } else if (requestCode == ItemAdapter.EDIT_ITEM_REQUEST) {
+                    if (itemAdapter.update(item))
+                        Text.printMessage(this, "Changes to " + name + " has been saved");
+                    else
+                        Text.printMessage(this, "Changes to " + name + " could not be saved");
+                }
             }
         } catch (ExecutionException e) {
             e.printStackTrace();
