@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group>
         <item
+            android:id="@+id/option_new_list"
+            android:icon="@drawable/icon_new_list"
+            android:title="@string/new_list"
+            app:showAsAction="ifRoom|withText"/>
+        <item
             android:id="@+id/option_open_list"
             android:icon="@drawable/icon_open"
             android:title="@string/open_list"
@@ -17,5 +22,9 @@
             android:icon="@drawable/icon_delete"
             android:title="@string/delete_list"
             app:showAsAction="ifRoom|withText"/>
+        <item
+            android:id="@+id/option_delete_all_lists"
+            android:title="@string/delete_all_lists"
+            app:showAsAction="never"/>
     </group>
 </menu>
