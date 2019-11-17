@@ -9,12 +9,20 @@
     <string name="price_input_label">Item price</string>
     <string name="price_input_hint">Enter item price</string>
     <string name="btn_save_item_text">Save Changes</string>
+    <string name="new_list">New List</string>
     <string name="open_list">Open List</string>
     <string name="delete_list">Delete List</string>
+    <string name="delete_all_lists">Delete All Lists</string>
     <string name="rename_list">Rename List</string>
     <string name="option_edit_item">Edit Item</string>
     <string name="option_delete_item">Delete Item</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_ok">OK</string>
     <string name="confirmation_deletion_msg">Are you sure you want to delete this item?</string>
+    <string name="hint_list_name_input">Enter list name</string>
+
+    <string name="btn_sort_alphabetically">Sort A to Z</string>
+    <string name="btn_sort_price">Sort Price</string>
+    <string name="btn_delete_items">Delete Items</string>
+    <string name="btn_get_items">Search Items</string>
 </resources>
