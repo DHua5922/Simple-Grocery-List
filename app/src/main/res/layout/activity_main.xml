@@ -11,13 +11,53 @@
         layout="@layout/list_toolbar"
         style="@style/ToolbarStyle"/>
 
+    <LinearLayout
+        android:id="@+id/btns_list_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_margin="@dimen/btn_ctrl_list_padding"
+        app:layout_constraintBottom_toTopOf="@+id/item_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout">
+
+        <Button
+            android:text="@string/btn_sort_alphabetically"
+            android:layout_marginRight="@dimen/btn_ctrl_list_minor_padding"
+            android:layout_marginEnd="@dimen/btn_ctrl_list_minor_padding"
+            style="@style/ListCtrlButton">
+        </Button>
+
+        <Button
+            android:text="@string/btn_sort_price"
+            android:layout_marginRight="@dimen/btn_ctrl_list_minor_padding"
+            android:layout_marginEnd="@dimen/btn_ctrl_list_minor_padding"
+            style="@style/ListCtrlButton">
+        </Button>
+
+        <Button
+            android:text="@string/btn_delete_items"
+            android:layout_marginRight="@dimen/btn_ctrl_list_minor_padding"
+            android:layout_marginEnd="@dimen/btn_ctrl_list_minor_padding"
+            style="@style/ListCtrlButton">
+        </Button>
+
+        <Button
+            android:text="@string/btn_get_items"
+            style="@style/ListCtrlButton">
+        </Button>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/item_list"
         style="@style/ItemList"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/btns_list_control"
         tools:listitem="@layout/item_display">
 
     </androidx.recyclerview.widget.RecyclerView>
