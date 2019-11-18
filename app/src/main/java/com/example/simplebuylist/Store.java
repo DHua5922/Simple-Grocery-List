@@ -44,6 +44,18 @@ public class Store {
     }
 
     /**
+     * Constructs a new store with the given store.
+     * The information from the given store is copied to this store.
+     *
+     * @param store given store
+     */
+    public Store(Store store) {
+        setId(store.getId());
+        setStoreName(store.getStoreName());
+        setTotalPrice(store.getTotalPrice());
+    }
+
+    /**
      * Gets the id of this store.
      *
      * @return  id of this store
