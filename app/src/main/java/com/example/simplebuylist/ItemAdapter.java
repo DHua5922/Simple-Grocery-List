@@ -118,6 +118,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     }
 
     public boolean delete(Item item) throws ExecutionException, InterruptedException {
+        /*if(viewModel.delete(item)) {
+            itemList.remove(clickedMenuPos);
+            notifyItemRemoved(clickedMenuPos);
+            return true;
+        }
+        return false;*/
         return viewModel.delete(item);
     }
 
@@ -151,7 +157,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
                 context.startActivityForResult(intent, EDIT_ITEM_REQUEST);
                 return true;
             case R.id.option_delete_item:
-                Dialog.confirmDeletion(context, context.getString(R.string.confirmation_deletion_msg), this, chosenItem);
+                Dialog.confirmItemDeletion(context, context.getString(R.string.confirmation_deletion_msg), this, chosenItem);
                 return true;
             default:
                 return false;
