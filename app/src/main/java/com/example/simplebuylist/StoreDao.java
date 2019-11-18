@@ -19,15 +19,15 @@ public interface StoreDao {
     @Delete
     int delete(Store store);
 
-    @Query("SELECT * FROM STORE_TABLE LIMIT 1")
-    Store getFirstStore();
+    @Query("DELETE FROM STORE_TABLE")
+    int deleteAll();
 
     @Query("SELECT * FROM STORE_TABLE WHERE storeName = :storeName")
-    LiveData<Store> getStore(String storeName);
+    Store getGivenStore(String storeName);
 
-    @Query("SELECT totalPrice FROM STORE_TABLE WHERE storeName = :storeName")
-    LiveData<Double> getTotalPrice(String storeName);
+    @Query("SELECT storeName FROM STORE_TABLE")
+    List<String> getAllNames();
 
     @Query("SELECT * FROM STORE_TABLE")
-    List<Store> getAllStores();
+    LiveData<List<Store>> getAllStores();
 }
