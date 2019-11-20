@@ -29,6 +29,8 @@ public interface ItemDao {
 
 
 
+
+
     @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName ORDER BY name ASC")
     List<Item> sortItemsAToZ(String storeName);
 
@@ -46,4 +48,28 @@ public interface ItemDao {
 
     @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 0 ORDER BY name DESC")
     List<Item> sortUncheckedItemsZToA(String storeName);
+
+
+
+
+
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName ORDER BY price ASC")
+    List<Item> sortPriceIncreasing(String storeName);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName ORDER BY price DESC")
+    List<Item> sortPriceDecreasing(String storeName);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 1 ORDER BY price ASC")
+    List<Item> sortCheckedPriceIncreasing(String storeName);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 1 ORDER BY price DESC")
+    List<Item> sortCheckedPriceDecreasing(String storeName);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 0 ORDER BY price ASC")
+    List<Item> sortUncheckedPriceIncreasing(String storeName);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 0 ORDER BY price DESC")
+    List<Item> sortUncheckedPriceDecreasing(String storeName);
+
 }
