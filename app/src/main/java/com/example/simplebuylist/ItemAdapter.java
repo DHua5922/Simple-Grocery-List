@@ -72,26 +72,52 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        //onBindCheckbox();
+    public void onBindViewHolder(@NonNull final ItemHolder holder, int position) {
+        onBindCheckbox(holder);
         onBindNameView(holder);
         onBindPriceView(holder);
         onBindAction(holder);
     }
 
-    public void onBindNameView(final ItemHolder holder) {
+    public void onBindCheckbox(ItemHolder holder) {
+        final int position = holder.getAdapterPosition();
+        final Item item = itemList.get(position);
+        final CheckBox checkBox = holder.getCheckBox();
+
+        checkBox.setChecked(item.wasPurchased() == 1);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkBox.isChecked()) {
+                    item.setWasPurchased(1);
+                } else {
+                    item.setWasPurchased(0);
+                }
+                clickedMenuPos = position;
+                checkBox.setChecked(item.wasPurchased() == 1);
+                try {
+                    update(item);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void onBindNameView(ItemHolder holder) {
         int position = holder.getAdapterPosition();
         Item item = itemList.get(position);
         itemList.set(position, item);
         holder.getItemNameView().setText(item.getName());
     }
 
-    public void onBindPriceView(final ItemHolder holder) {
+    public void onBindPriceView(ItemHolder holder) {
         int position = holder.getAdapterPosition();
         Item item = itemList.get(position);
         itemList.set(position, item);
         holder.getItemPriceView().setText(Text.formatPrice(item.getPrice()));
-
     }
 
     public void onBindAction(final ItemHolder holder) {
@@ -110,11 +136,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     }
 
     public boolean add(Item item) throws ExecutionException, InterruptedException {
-        return viewModel.insert(item);
+        if(viewModel.insert(item)) {
+            itemList.add(item);
+            setItemList(itemList);
+            return true;
+        }
+        return false;
     }
 
     public boolean update(Item item) throws ExecutionException, InterruptedException {
-        return viewModel.update(item);
+        if(viewModel.update(item)) {
+            itemList.set(clickedMenuPos, item);
+            setItemList(itemList);
+            return true;
+        }
+        return false;
     }
 
     public boolean delete(Item item) throws ExecutionException, InterruptedException {
@@ -124,7 +160,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
             return true;
         }
         return false;*/
-        return viewModel.delete(item);
+        if(viewModel.delete(item)) {
+            itemList.remove(clickedMenuPos);
+            setItemList(itemList);
+            return true;
+        }
+        return false;
     }
 
     public int getHighestOrder() {
@@ -153,7 +194,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
                 intent.putExtra(EXTRA_ITEM_ID, chosenItem.getId());
                 intent.putExtra(EXTRA_ITEM_NAME, chosenItem.getName());
                 intent.putExtra(EXTRA_ITEM_PRICE, chosenItem.getPrice());
-                intent.putExtra(EXTRA_ITEM_IS_BOUGHT, chosenItem.getWasPurchased());
+                intent.putExtra(EXTRA_ITEM_IS_BOUGHT, chosenItem.wasPurchased());
                 context.startActivityForResult(intent, EDIT_ITEM_REQUEST);
                 return true;
             case R.id.option_delete_item:
