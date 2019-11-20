@@ -13,12 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> implements PopupMenu.OnMenuItemClickListener {
 
-    private ArrayList<Item> itemList;
+    private List<Item> itemList;
     private ViewModel viewModel;
     private MainActivity context;
 
@@ -131,7 +131,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
         return itemList.size() == 0 ? 0 : itemList.get(itemList.size() - 1).getOrder();
     }
 
-    public void setItemList(ArrayList<Item> itemList) {
+    public void setItemList(List<Item> itemList) {
         this.itemList = itemList;
         notifyDataSetChanged();
     }
