@@ -1,7 +1,9 @@
 package com.example.simplebuylist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,14 +16,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     public static final int ADD_ITEM_REQUEST = 0;
     public static String STORE_NAME = "Unnamed";
+    public static Store currentStore;
 
     private ItemAdapter itemAdapter;
 
@@ -37,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        TextView listLabelView = findViewById(R.id.list_label);
-        listLabelView.setText(STORE_NAME);
 
         ImageView addItemBtn = findViewById(R.id.btn_add_item);
         addItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -50,32 +50,49 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ViewModel viewModel = new ViewModel(getApplication());
-        viewModel.getStore(STORE_NAME).observe(this, new Observer<Store>() {
+        final ViewModel viewModel = new ViewModel(getApplication());
+        RecyclerView itemListView = findViewById(R.id.item_list);
+        itemListView.setLayoutManager(new LinearLayoutManager(this));
+        itemAdapter = new ItemAdapter(this, viewModel);
+        itemListView.setAdapter(itemAdapter);
+
+        final LifecycleOwner lifecycleOwner = this;
+        viewModel.getAllStores().observe(lifecycleOwner, new Observer<List<Store>>() {
             @Override
-            public void onChanged(Store store) {
-                STORE_NAME = store.getStoreName();
+            public void onChanged(List<Store> stores) {
+                try {
+                    if(stores.size() == 0) {
+                        currentStore = new Store(0, "Unnamed", 0);
+                        viewModel.insert(currentStore);
+                    }
+                    else {
+                        currentStore = (currentStore != null) ? currentStore : stores.get(stores.size() - 1);
+                    }
+
+                    STORE_NAME = currentStore.getStoreName();
+                    viewModel.getAllItems(STORE_NAME).observe(lifecycleOwner, new Observer<List<Item>>() {
+                        @Override
+                        public void onChanged(List<Item> items) {
+                            try {
+                                items = viewModel.getItemList(STORE_NAME);
+                                itemAdapter.setItemList(items);
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+                    TextView listLabelView = findViewById(R.id.list_label);
+                    listLabelView.setText(STORE_NAME);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
-
-        try {
-            RecyclerView itemListView = findViewById(R.id.item_list);
-            itemListView.setLayoutManager(new LinearLayoutManager(this));
-
-            itemAdapter = new ItemAdapter(this, viewModel);
-            itemListView.setAdapter(itemAdapter);
-            //itemAdapter.setItemList((ArrayList<Item>) viewModel.getAllItems(STORE_NAME));
-            viewModel.getAllItems(STORE_NAME).observe(this, new Observer<List<Item>>() {
-                @Override
-                public void onChanged(List<Item> items) {
-                    itemAdapter.setItemList((ArrayList<Item>) items);
-                }
-            });
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         // Example of a call to a native method
         //tv.setText(stringFromJNI());
@@ -90,14 +107,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem selectedItem) {
-
-        switch(selectedItem.getItemId()) {
-            case R.id.option_open_list:
-                break;
-            case R.id.option_rename_list:
-                break;
-            case R.id.option_delete_list:
-                break;
+        ViewModel viewModel = new ViewModel(getApplication());
+        try {
+            switch(selectedItem.getItemId()) {
+                case R.id.option_new_list:
+                    Dialog.createList(this, "Enter a name for the new list", viewModel);
+                    break;
+                case R.id.option_rename_list:
+                    Dialog.renameList(this, "Enter a new name for this list", viewModel);
+                    break;
+                case R.id.option_open_list:
+                    TextView listLabelView = findViewById(R.id.list_label);
+                    Dialog.openList(this, "Choose which list to open", viewModel, itemAdapter, listLabelView);
+                    break;
+                case R.id.option_delete_list:
+                    Dialog.confirmListDeletion(this, "Are you sure you want to delete this list?", viewModel);
+                    break;
+                case R.id.option_delete_all_lists:
+                    Dialog.confirmAllListDeletion(this, "Are you sure you want to delete all your lists?", viewModel);
+                    break;
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         return super.onOptionsItemSelected(selectedItem);
@@ -122,8 +155,9 @@ public class MainActivity extends AppCompatActivity {
                 );
 
                 if (requestCode == ADD_ITEM_REQUEST) {
-                    if (itemAdapter.add(item))
+                    if (itemAdapter.add(item)) {
                         Text.printMessage(this, name + " has been added");
+                    }
                     else
                         Text.printMessage(this, name + " could not be added");
                 } else if (requestCode == ItemAdapter.EDIT_ITEM_REQUEST) {
@@ -138,6 +172,95 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+
+        popup.setOnMenuItemClickListener(this);
+        switch(v.getId()) {
+            case R.id.btn_sort_a_to_z:
+                popup.inflate(R.menu.menu_sort_a_to_z);
+                break;
+            case R.id.btn_sort_price:
+                popup.inflate(R.menu.menu_sort_price);
+                break;
+            case R.id.btn_delete_items:
+                popup.inflate(R.menu.menu_delete_items);
+                break;
+            default:
+                popup.inflate(R.menu.menu_search_items);
+        }
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        ViewModel viewModel = new ViewModel(getApplication());
+        try {
+            switch (item.getItemId()) {
+                case R.id.menu_item_sort_a_to_z:
+                    itemAdapter.setItemList(viewModel.sortItemsAToZ(STORE_NAME));
+                    return true;
+                case R.id.menu_item_sort_z_to_a:
+                    itemAdapter.setItemList(viewModel.sortItemsZToA(STORE_NAME));
+                    return true;
+                case R.id.menu_item_sort_checked_a_to_z:
+                    itemAdapter.setItemList(viewModel.sortCheckedItemsAToZ(STORE_NAME));
+                    return true;
+                case R.id.menu_item_sort_checked_z_to_a:
+                    itemAdapter.setItemList(viewModel.sortCheckedItemsZToA(STORE_NAME));
+                    return true;
+                case R.id.menu_item_sort_unchecked_a_to_z:
+                    itemAdapter.setItemList(viewModel.sortUncheckedItemsAToZ(STORE_NAME));
+                    return true;
+                case R.id.menu_item_sort_unchecked_z_to_a:
+                    itemAdapter.setItemList(viewModel.sortUncheckedItemsZToA(STORE_NAME));
+                    return true;
+
+
+                case R.id.menu_item_sort_price_increasing:
+                    return true;
+                case R.id.menu_item_sort_price_decreasing:
+                    return true;
+                case R.id.menu_item_sort_checked_price_increasing:
+                    return true;
+                case R.id.menu_item_sort_checked_price_decreasing:
+                    return true;
+                case R.id.menu_item_sort_unchecked_price_increasing:
+                    return true;
+                case R.id.menu_item_sort_unchecked_price_decreasing:
+                    return true;
+
+
+
+                case R.id.menu_item_delete_all:
+                    return true;
+                case R.id.menu_item_delete_checked:
+                    return true;
+                case R.id.menu_item_delete_unchecked:
+                    return true;
+
+
+
+                case R.id.menu_item_search_all:
+                    return true;
+                case R.id.menu_item_search_checked:
+                    return true;
+                case R.id.menu_item_search_unchecked:
+                    return true;
+                case R.id.menu_item_search_name:
+                    return true;
+                case R.id.menu_item_search_keyword:
+                    return true;
+                case R.id.menu_item_search_price:
+                    return true;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     /**
