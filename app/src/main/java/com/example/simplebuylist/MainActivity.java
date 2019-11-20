@@ -220,16 +220,22 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
 
                 case R.id.menu_item_sort_price_increasing:
+                    itemAdapter.setItemList(viewModel.sortPriceIncreasing(STORE_NAME));
                     return true;
                 case R.id.menu_item_sort_price_decreasing:
+                    itemAdapter.setItemList(viewModel.sortPriceDecreasing(STORE_NAME));
                     return true;
                 case R.id.menu_item_sort_checked_price_increasing:
+                    itemAdapter.setItemList(viewModel.sortCheckedPriceIncreasing(STORE_NAME));
                     return true;
                 case R.id.menu_item_sort_checked_price_decreasing:
+                    itemAdapter.setItemList(viewModel.sortCheckedPriceDecreasing(STORE_NAME));
                     return true;
                 case R.id.menu_item_sort_unchecked_price_increasing:
+                    itemAdapter.setItemList(viewModel.sortUncheckedPriceIncreasing(STORE_NAME));
                     return true;
                 case R.id.menu_item_sort_unchecked_price_decreasing:
+                    itemAdapter.setItemList(viewModel.sortUncheckedPriceDecreasing(STORE_NAME));
                     return true;
 
 
