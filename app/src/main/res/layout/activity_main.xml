@@ -24,6 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_layout">
 
         <Button
+            android:id="@+id/btn_sort_a_to_z"
             android:text="@string/btn_sort_alphabetically"
             android:layout_marginRight="@dimen/btn_ctrl_list_minor_padding"
             android:layout_marginEnd="@dimen/btn_ctrl_list_minor_padding"
@@ -31,6 +32,7 @@
         </Button>
 
         <Button
+            android:id="@+id/btn_sort_price"
             android:text="@string/btn_sort_price"
             android:layout_marginRight="@dimen/btn_ctrl_list_minor_padding"
             android:layout_marginEnd="@dimen/btn_ctrl_list_minor_padding"
@@ -38,6 +40,7 @@
         </Button>
 
         <Button
+            android:id="@+id/btn_delete_items"
             android:text="@string/btn_delete_items"
             android:layout_marginRight="@dimen/btn_ctrl_list_minor_padding"
             android:layout_marginEnd="@dimen/btn_ctrl_list_minor_padding"
@@ -45,6 +48,7 @@
         </Button>
 
         <Button
+            android:id="@+id/btn_search_items"
             android:text="@string/btn_get_items"
             style="@style/ListCtrlButton">
         </Button>
