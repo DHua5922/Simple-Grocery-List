@@ -112,7 +112,7 @@ public class Item {
      *
      * @return  indication of whether this item was purchased or not
      */
-    public int getWasPurchased() {
+    public int wasPurchased() {
         return wasPurchased;
     }
 
