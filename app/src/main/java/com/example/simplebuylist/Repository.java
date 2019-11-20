@@ -32,8 +32,12 @@ public class Repository {
         return new DeleteStoreAsyncTask(storeDao).execute(store).get();
     }
 
-    public LiveData<Store> getStore(String storeName) {
-        return storeDao.getStore(storeName);
+    public int deleteAll() throws ExecutionException, InterruptedException {
+        return new DeleteAllStoresAsyncTask(storeDao).execute().get();
+    }
+
+    public Store getGivenStore(String storeName) throws ExecutionException, InterruptedException {
+        return new GetGivenStoreAsyncTask(storeDao).execute(storeName).get();
     }
 
     public List<String> getAllStoreNames() throws ExecutionException, InterruptedException {
@@ -65,6 +69,38 @@ public class Repository {
     public LiveData<List<Item>> getAllItems(String storeName) throws ExecutionException, InterruptedException {
         return new GetAllItemsAsyncTask(itemDao).execute(storeName).get();
     }
+
+
+
+
+
+    public List<Item> sortItemsAToZ(String storeName) throws ExecutionException, InterruptedException {
+        return new SortItemsAToZAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortItemsZToA(String storeName) throws ExecutionException, InterruptedException {
+        return new SortItemsZToAAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortCheckedItemsAToZ(String storeName) throws ExecutionException, InterruptedException {
+        return new SortCheckedItemsAToZAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortCheckedItemsZToA(String storeName) throws ExecutionException, InterruptedException {
+        return new SortCheckedItemsZToAAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortUncheckedItemsAToZ(String storeName) throws ExecutionException, InterruptedException {
+        return new SortUncheckedItemsAToZAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortUncheckedItemsZToA(String storeName) throws ExecutionException, InterruptedException {
+        return new SortUncheckedItemsZToAAsyncTask(itemDao).execute(storeName).get();
+    }
+
+
+
+
 
     /* ASYNCTASKS */
     private static class InsertStoreAsyncTask extends AsyncTask<Store, Void, Long> {
@@ -106,6 +142,21 @@ public class Repository {
         }
     }
 
+    private static class DeleteAllStoresAsyncTask extends AsyncTask<Void, Void, Integer> {
+        private StoreDao storeDao;
+
+        private DeleteAllStoresAsyncTask(StoreDao storeDao) {
+            this.storeDao = storeDao;
+        }
+
+        @Override
+        protected Integer doInBackground(Void...voids) {
+            return storeDao.deleteAll();
+        }
+    }
+
+
+
     private static class GetAllStoreNamesAsyncTask extends AsyncTask<Void, Void, List<String>> {
         private StoreDao storeDao;
 
@@ -116,6 +167,19 @@ public class Repository {
         @Override
         protected List<String> doInBackground(Void...voids) {
             return storeDao.getAllNames();
+        }
+    }
+
+    private static class GetGivenStoreAsyncTask extends AsyncTask<String, Void, Store> {
+        private StoreDao storeDao;
+
+        private GetGivenStoreAsyncTask(StoreDao storeDao) {
+            this.storeDao = storeDao;
+        }
+
+        @Override
+        protected Store doInBackground(String...strings) {
+            return storeDao.getGivenStore(strings[0]);
         }
     }
 
@@ -187,4 +251,84 @@ public class Repository {
     }
 
 
+
+
+
+    private static class SortItemsAToZAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortItemsAToZAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortItemsAToZ(strings[0]);
+        }
+    }
+
+    private static class SortItemsZToAAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortItemsZToAAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortItemsZToA(strings[0]);
+        }
+    }
+
+    private static class SortCheckedItemsAToZAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortCheckedItemsAToZAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortCheckedItemsAToZ(strings[0]);
+        }
+    }
+
+    private static class SortCheckedItemsZToAAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortCheckedItemsZToAAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortCheckedItemsZToA(strings[0]);
+        }
+    }
+
+    private static class SortUncheckedItemsAToZAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortUncheckedItemsAToZAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortUncheckedItemsAToZ(strings[0]);
+        }
+    }
+
+    private static class SortUncheckedItemsZToAAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortUncheckedItemsZToAAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortUncheckedItemsZToA(strings[0]);
+        }
+    }
 }
