@@ -100,6 +100,30 @@ public class Repository {
 
 
 
+    public List<Item> sortPriceIncreasing(String storeName) throws ExecutionException, InterruptedException {
+        return new SortPriceIncreasingAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortPriceDecreasing(String storeName) throws ExecutionException, InterruptedException {
+        return new SortPriceDecreasingAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortCheckedPriceIncreasing(String storeName) throws ExecutionException, InterruptedException {
+        return new SortCheckedPriceIncreasingAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortCheckedPriceDecreasing(String storeName) throws ExecutionException, InterruptedException {
+        return new SortCheckedPriceDecreasingAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortUncheckedPriceIncreasing(String storeName) throws ExecutionException, InterruptedException {
+        return new SortUncheckedPriceIncreasingAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> sortUncheckedPriceDecreasing(String storeName) throws ExecutionException, InterruptedException {
+        return new SortUncheckedPriceDecreasingAsyncTask(itemDao).execute(storeName).get();
+    }
+
 
 
     /* ASYNCTASKS */
@@ -329,6 +353,89 @@ public class Repository {
         @Override
         protected List<Item> doInBackground(String...strings) {
             return itemDao.sortUncheckedItemsZToA(strings[0]);
+        }
+    }
+
+
+
+
+
+
+    private static class SortPriceIncreasingAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortPriceIncreasingAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortPriceIncreasing(strings[0]);
+        }
+    }
+
+    private static class SortPriceDecreasingAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortPriceDecreasingAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortPriceDecreasing(strings[0]);
+        }
+    }
+
+    private static class SortCheckedPriceIncreasingAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortCheckedPriceIncreasingAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortCheckedPriceIncreasing(strings[0]);
+        }
+    }
+
+    private static class SortCheckedPriceDecreasingAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortCheckedPriceDecreasingAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortCheckedPriceDecreasing(strings[0]);
+        }
+    }
+
+    private static class SortUncheckedPriceIncreasingAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortUncheckedPriceIncreasingAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortUncheckedPriceIncreasing(strings[0]);
+        }
+    }
+
+    private static class SortUncheckedPriceDecreasingAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private SortUncheckedPriceDecreasingAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.sortUncheckedPriceDecreasing(strings[0]);
         }
     }
 }

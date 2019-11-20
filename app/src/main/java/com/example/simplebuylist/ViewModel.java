@@ -92,4 +92,32 @@ public class ViewModel extends AndroidViewModel {
     public List<Item> sortUncheckedItemsZToA(String storeName) throws ExecutionException, InterruptedException {
         return repository.sortUncheckedItemsZToA(storeName);
     }
+
+
+
+
+
+    public List<Item> sortPriceIncreasing(String storeName) throws ExecutionException, InterruptedException {
+        return repository.sortPriceIncreasing(storeName);
+    }
+
+    public List<Item> sortPriceDecreasing(String storeName) throws ExecutionException, InterruptedException {
+        return repository.sortPriceDecreasing(storeName);
+    }
+
+    public List<Item> sortCheckedPriceIncreasing(String storeName) throws ExecutionException, InterruptedException {
+        return repository.sortCheckedPriceIncreasing(storeName);
+    }
+
+    public List<Item> sortCheckedPriceDecreasing(String storeName) throws ExecutionException, InterruptedException {
+        return repository.sortCheckedPriceDecreasing(storeName);
+    }
+
+    public List<Item> sortUncheckedPriceIncreasing(String storeName) throws ExecutionException, InterruptedException {
+        return repository.sortUncheckedPriceIncreasing(storeName);
+    }
+
+    public List<Item> sortUncheckedPriceDecreasing(String storeName) throws ExecutionException, InterruptedException {
+        return repository.sortUncheckedPriceDecreasing(storeName);
+    }
 }
