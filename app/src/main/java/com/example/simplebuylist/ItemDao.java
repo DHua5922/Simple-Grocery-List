@@ -72,4 +72,15 @@ public interface ItemDao {
     @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 0 ORDER BY price DESC")
     List<Item> sortUncheckedPriceDecreasing(String storeName);
 
+
+
+
+    @Query("DELETE FROM ITEM_TABLE WHERE storeName = :storeName")
+    int deleteAllItems(String storeName);
+
+    @Query("DELETE FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 1")
+    int deleteAllCheckedItems(String storeName);
+
+    @Query("DELETE FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 0")
+    int deleteAllUncheckedItems(String storeName);
 }

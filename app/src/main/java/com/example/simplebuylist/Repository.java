@@ -126,6 +126,24 @@ public class Repository {
 
 
 
+
+
+    public int deleteAllItems(String storeName) throws ExecutionException, InterruptedException {
+        return new DeleteAllItemsAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public int deleteAllCheckedItems(String storeName) throws ExecutionException, InterruptedException {
+        return new DeleteAllCheckedItemsAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public int deleteAllUncheckedItems(String storeName) throws ExecutionException, InterruptedException {
+        return new DeleteAllUncheckedItemsAsyncTask(itemDao).execute(storeName).get();
+    }
+
+
+
+
+
     /* ASYNCTASKS */
     private static class InsertStoreAsyncTask extends AsyncTask<Store, Void, Long> {
         private StoreDao storeDao;
@@ -436,6 +454,49 @@ public class Repository {
         @Override
         protected List<Item> doInBackground(String...strings) {
             return itemDao.sortUncheckedPriceDecreasing(strings[0]);
+        }
+    }
+
+
+
+
+
+    private static class DeleteAllItemsAsyncTask extends AsyncTask<String, Void, Integer> {
+        private ItemDao itemDao;
+
+        private DeleteAllItemsAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected Integer doInBackground(String...strings) {
+            return itemDao.deleteAllItems(strings[0]);
+        }
+    }
+
+    private static class DeleteAllCheckedItemsAsyncTask extends AsyncTask<String, Void, Integer> {
+        private ItemDao itemDao;
+
+        private DeleteAllCheckedItemsAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected Integer doInBackground(String...strings) {
+            return itemDao.deleteAllCheckedItems(strings[0]);
+        }
+    }
+
+    private static class DeleteAllUncheckedItemsAsyncTask extends AsyncTask<String, Void, Integer> {
+        private ItemDao itemDao;
+
+        private DeleteAllUncheckedItemsAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected Integer doInBackground(String...strings) {
+            return itemDao.deleteAllUncheckedItems(strings[0]);
         }
     }
 }

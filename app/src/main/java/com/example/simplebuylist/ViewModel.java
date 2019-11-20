@@ -120,4 +120,19 @@ public class ViewModel extends AndroidViewModel {
     public List<Item> sortUncheckedPriceDecreasing(String storeName) throws ExecutionException, InterruptedException {
         return repository.sortUncheckedPriceDecreasing(storeName);
     }
+
+
+
+
+    public boolean deleteAllItems(String storeName) throws ExecutionException, InterruptedException {
+        return repository.deleteAllItems(storeName) > 0;
+    }
+
+    public boolean deleteAllCheckedItems(String storeName) throws ExecutionException, InterruptedException {
+        return repository.deleteAllCheckedItems(storeName) > 0;
+    }
+
+    public boolean deleteAllUncheckedItems(String storeName) throws ExecutionException, InterruptedException {
+        return repository.deleteAllUncheckedItems(storeName) > 0;
+    }
 }
