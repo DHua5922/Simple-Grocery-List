@@ -241,10 +241,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
 
                 case R.id.menu_item_delete_all:
+                    viewModel.deleteAllItems(STORE_NAME);
                     return true;
                 case R.id.menu_item_delete_checked:
+                    viewModel.deleteAllCheckedItems(STORE_NAME);
                     return true;
                 case R.id.menu_item_delete_unchecked:
+                    viewModel.deleteAllUncheckedItems(STORE_NAME);
                     return true;
 
 
