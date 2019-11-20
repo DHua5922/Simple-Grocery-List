@@ -108,6 +108,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@xml/button</item>
+        <item name="android:onClick">showMenu</item>
     </style>
 
     <style name="Dialog">
