@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
+        <item
+            android:id="@+id/menu_item_sort_a_to_z"
+            android:title="@string/menu_item_sort_a_to_z"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/menu_item_sort_z_to_a"
+            android:title="@string/menu_item_sort_z_to_a"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/menu_item_sort_checked_a_to_z"
+            android:title="@string/menu_item_sort_checked_a_to_z"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/menu_item_sort_checked_z_to_a"
+            android:title="@string/menu_item_sort_checked_z_to_a"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/menu_item_sort_unchecked_a_to_z"
+            android:title="@string/menu_item_sort_unchecked_a_to_z"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/menu_item_sort_unchecked_z_to_a"
+            android:title="@string/menu_item_sort_unchecked_z_to_a"
+            app:showAsAction="never"/>
+    </group>
+</menu>
