@@ -3,13 +3,12 @@
 
     <string name="label_isBought">Purchased?</string>
     <string name="item_overflow_add">Add Item</string>
-    <string name="item_overflow_save_changes">Save Changes</string>
+    <string name="item_overflow_save_changes">Save Item</string>
     <string name="item_overflow_delete">Delete Item</string>
     <string name="name_input_label">Item name</string>
     <string name="name_input_hint">Enter item name</string>
     <string name="price_input_label">Item price</string>
     <string name="price_input_hint">Enter item price</string>
-    <string name="btn_save_item_text">Save Changes</string>
 
     <string name="new_list">New List</string>
     <string name="open_list">Open List</string>
@@ -50,7 +49,6 @@
 
     <string name="menu_item_search_name">Search Items by Name</string>
     <string name="menu_item_search_keyword">Search Items by Keyword</string>
-    <string name="menu_item_search_price">Search Items by Price</string>
     <string name="menu_item_search_checked">Get All Checked Items</string>
     <string name="menu_item_search_unchecked">Get All Unchecked Items</string>
     <string name="menu_item_search_all">Get All Items</string>
