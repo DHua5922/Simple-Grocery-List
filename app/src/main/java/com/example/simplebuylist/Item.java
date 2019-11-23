@@ -160,4 +160,15 @@ public class Item {
     public void setStoreName(String storeName) {
         this.storeName = storeName;
     }
+
+    public boolean equals(Item item) {
+        return (
+            this.getId() == item.getId() &&
+            this.getName().equals(item.getName()) &&
+            this.getPrice() == item.getPrice() &&
+            this.getOrder() == item.getOrder() &&
+            this.wasPurchased() == item.wasPurchased() &&
+            this.getStoreName().equals(item.getStoreName())
+        );
+    }
 }
