@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> implements PopupMenu.OnMenuItemClickListener {
+public class ItemAdapter extends ListAdapter<Item, ItemAdapter.ItemHolder> implements PopupMenu.OnMenuItemClickListener {
 
     private List<Item> itemList;
     private ViewModel viewModel;
@@ -31,9 +33,27 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     private int clickedMenuPos = -1;
 
     public ItemAdapter(MainActivity context, ViewModel viewModel) {
+        super(DIFF_CALLBACK);
         this.context = context;
         this.viewModel = viewModel;
     }
+
+    public static final DiffUtil.ItemCallback<Item> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Item>() {
+                @Override
+                public boolean areItemsTheSame(
+                        @NonNull Item oldItem, @NonNull Item newItem) {
+                    // User properties may have changed if reloaded from the DB, but ID is fixed
+                    return oldItem.getId() == newItem.getId();
+                }
+                @Override
+                public boolean areContentsTheSame(
+                        @NonNull Item oldItem, @NonNull Item newItem) {
+                    // NOTE: if you use equals, your object must properly override Object#equals()
+                    // Incorrectly returning false here will result in too many animations.
+                    return oldItem.equals(newItem);
+                }
+            };
 
     public class ItemHolder extends RecyclerView.ViewHolder {
         private CheckBox checkBox;
@@ -79,7 +99,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
         onBindAction(holder);
     }
 
-    public void onBindCheckbox(ItemHolder holder) {
+    public void onBindCheckbox(final ItemHolder holder) {
         final int position = holder.getAdapterPosition();
         final Item item = itemList.get(position);
         final CheckBox checkBox = holder.getCheckBox();
@@ -93,7 +113,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
                 } else {
                     item.setWasPurchased(0);
                 }
-                clickedMenuPos = position;
+                clickedMenuPos = holder.getAdapterPosition();
                 checkBox.setChecked(item.wasPurchased() == 1);
                 try {
                     update(item);
@@ -136,9 +156,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     }
 
     public boolean add(Item item) throws ExecutionException, InterruptedException {
-        if(viewModel.insert(item)) {
+        long id = viewModel.insert(item);
+        if(id > 0) {
+            item.setId(id);
             itemList.add(item);
-            setItemList(itemList);
+            notifyItemInserted(itemList.size());
             return true;
         }
         return false;
@@ -147,22 +169,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
     public boolean update(Item item) throws ExecutionException, InterruptedException {
         if(viewModel.update(item)) {
             itemList.set(clickedMenuPos, item);
-            setItemList(itemList);
+            notifyItemChanged(clickedMenuPos);
             return true;
         }
         return false;
     }
 
     public boolean delete(Item item) throws ExecutionException, InterruptedException {
-        /*if(viewModel.delete(item)) {
-            itemList.remove(clickedMenuPos);
-            notifyItemRemoved(clickedMenuPos);
-            return true;
-        }
-        return false;*/
         if(viewModel.delete(item)) {
             itemList.remove(clickedMenuPos);
-            setItemList(itemList);
+            notifyItemRemoved(clickedMenuPos);
             return true;
         }
         return false;
@@ -174,7 +190,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> im
 
     public void setItemList(List<Item> itemList) {
         this.itemList = itemList;
-        notifyDataSetChanged();
+        submitList(itemList);
+    }
+
+    public List<Item> getItemList() {
+        return this.itemList;
+    }
+
+    public int getClickedItemDisplay() {
+        return clickedMenuPos;
+    }
+
+    public Item getItem(int position) {
+        return itemList.get(position);
     }
 
     public void showMenu(View v) {
