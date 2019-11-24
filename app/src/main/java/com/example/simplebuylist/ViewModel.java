@@ -18,8 +18,8 @@ public class ViewModel extends AndroidViewModel {
         repository = new Repository(application);
     }
 
-    public Boolean insert(Store store) throws ExecutionException, InterruptedException {
-        return repository.insert(store) > 0;
+    public long insert(Store store) throws ExecutionException, InterruptedException {
+        return repository.insert(store);
     }
 
     public Boolean update(Store store) throws ExecutionException, InterruptedException {
@@ -47,25 +47,26 @@ public class ViewModel extends AndroidViewModel {
     }
 
 
-    public Boolean insert(Item item) throws ExecutionException, InterruptedException {
-        return repository.insert(item) > 0;
+    public long insert(Item item) throws ExecutionException, InterruptedException {
+        return repository.insert(item);
     }
 
     public Boolean update(Item item) throws ExecutionException, InterruptedException {
         return repository.update(item) > 0;
     }
 
+    public Boolean update(List<Item> itemList) throws ExecutionException, InterruptedException {
+        return repository.update(itemList) > 0;
+    }
+
     public Boolean delete(Item item) throws ExecutionException, InterruptedException {
         return repository.delete(item) > 0;
     }
 
-    public List<Item> getItemList(String storeName) throws ExecutionException, InterruptedException {
-        return repository.getItemList(storeName);
+    public List<String> getAllItemNames(String storeName) throws ExecutionException, InterruptedException {
+        return repository.getAllItemNames(storeName);
     }
 
-    public LiveData<List<Item>> getAllItems(String storeName) throws ExecutionException, InterruptedException {
-        return repository.getAllItems(storeName);
-    }
 
 
 
@@ -134,5 +135,28 @@ public class ViewModel extends AndroidViewModel {
 
     public boolean deleteAllUncheckedItems(String storeName) throws ExecutionException, InterruptedException {
         return repository.deleteAllUncheckedItems(storeName) > 0;
+    }
+
+
+
+
+    public List<Item> getItemList(String storeName) throws ExecutionException, InterruptedException {
+        return repository.getItemList(storeName);
+    }
+
+    public List<Item> getCheckedItems(String storeName) throws ExecutionException, InterruptedException {
+        return repository.getCheckedItems(storeName);
+    }
+
+    public List<Item> getUncheckedItems(String storeName) throws ExecutionException, InterruptedException {
+        return repository.getUncheckedItems(storeName);
+    }
+
+    public List<Item> getItemsByName(String storeName, String name) throws ExecutionException, InterruptedException {
+        return repository.getItemsByName(storeName, name);
+    }
+
+    public List<Item> getItemsByKeyword(String storeName, String keyword) throws ExecutionException, InterruptedException {
+        return repository.getItemsByKeyword(storeName, keyword);
     }
 }
