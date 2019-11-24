@@ -58,16 +58,16 @@ public class Repository {
         return new UpdateItemAsyncTask(itemDao).execute(item).get();
     }
 
+    public int update(List<Item> itemList) throws ExecutionException, InterruptedException {
+        return new UpdateItemListAsyncTask(itemDao).execute(itemList).get();
+    }
+
     public int delete(Item item) throws ExecutionException, InterruptedException {
         return new DeleteItemAsyncTask(itemDao).execute(item).get();
     }
 
-    public List<Item> getItemList(String storeName) throws ExecutionException, InterruptedException {
-        return new GetItemListAsyncTask(itemDao).execute(storeName).get();
-    }
-
-    public LiveData<List<Item>> getAllItems(String storeName) throws ExecutionException, InterruptedException {
-        return new GetAllItemsAsyncTask(itemDao).execute(storeName).get();
+    public List<String> getAllItemNames(String storeName) throws ExecutionException, InterruptedException {
+        return new GetAllItemNamesAsyncTask(itemDao).execute(storeName).get();
     }
 
 
@@ -138,6 +138,28 @@ public class Repository {
 
     public int deleteAllUncheckedItems(String storeName) throws ExecutionException, InterruptedException {
         return new DeleteAllUncheckedItemsAsyncTask(itemDao).execute(storeName).get();
+    }
+
+
+
+    public List<Item> getItemList(String storeName) throws ExecutionException, InterruptedException {
+        return new GetItemListAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> getCheckedItems(String storeName) throws ExecutionException, InterruptedException {
+        return new GetAllCheckedItemsAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> getUncheckedItems(String storeName) throws ExecutionException, InterruptedException {
+        return new GetAllUncheckedItemsAsyncTask(itemDao).execute(storeName).get();
+    }
+
+    public List<Item> getItemsByName(String storeName, String name) throws ExecutionException, InterruptedException {
+        return new GetItemsByNameAsyncTask(itemDao).execute(storeName, name).get();
+    }
+
+    public List<Item> getItemsByKeyword(String storeName, String keyword) throws ExecutionException, InterruptedException {
+        return new GetItemsByKeywordAsyncTask(itemDao).execute(storeName, keyword).get();
     }
 
 
@@ -253,6 +275,20 @@ public class Repository {
         }
     }
 
+    private static class UpdateItemListAsyncTask extends AsyncTask<List<Item>, Void, Integer> {
+        private ItemDao itemDao;
+
+        private UpdateItemListAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @SafeVarargs
+        @Override
+        protected final Integer doInBackground(List<Item>... items) {
+            return itemDao.update(items[0]);
+        }
+    }
+
     private static class DeleteItemAsyncTask extends AsyncTask<Item, Void, Integer> {
         private ItemDao itemDao;
 
@@ -266,29 +302,16 @@ public class Repository {
         }
     }
 
-    private static class GetItemListAsyncTask extends AsyncTask<String, Void, List<Item>> {
+    private static class GetAllItemNamesAsyncTask extends  AsyncTask<String, Void, List<String>> {
         private ItemDao itemDao;
 
-        private GetItemListAsyncTask(ItemDao itemDao) {
+        private GetAllItemNamesAsyncTask(ItemDao itemDao) {
             this.itemDao = itemDao;
         }
 
         @Override
-        protected List<Item> doInBackground(String...strings) {
-            return itemDao.getItemList(strings[0]);
-        }
-    }
-
-    private static class GetAllItemsAsyncTask extends AsyncTask<String, Void, LiveData<List<Item>>> {
-        private ItemDao itemDao;
-
-        private GetAllItemsAsyncTask(ItemDao itemDao) {
-            this.itemDao = itemDao;
-        }
-
-        @Override
-        protected LiveData<List<Item>> doInBackground(String...strings) {
-            return itemDao.getAllItems(strings[0]);
+        protected List<String> doInBackground(String...strings) {
+            return itemDao.getAllItemNames(strings[0]);
         }
     }
 
@@ -499,4 +522,75 @@ public class Repository {
             return itemDao.deleteAllUncheckedItems(strings[0]);
         }
     }
+
+
+
+
+
+    private static class GetItemListAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private GetItemListAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.getItemList(strings[0]);
+        }
+    }
+
+    private static class GetAllCheckedItemsAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private GetAllCheckedItemsAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.getCheckedItems(strings[0]);
+        }
+    }
+
+    private static class GetAllUncheckedItemsAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private GetAllUncheckedItemsAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.getUncheckedItems(strings[0]);
+        }
+    }
+
+    private static class GetItemsByNameAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private GetItemsByNameAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.getItemsByName(strings[0], strings[1]);
+        }
+    }
+
+    private static class GetItemsByKeywordAsyncTask extends AsyncTask<String, Void, List<Item>> {
+        private ItemDao itemDao;
+
+        private GetItemsByKeywordAsyncTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected List<Item> doInBackground(String...strings) {
+            return itemDao.getItemsByKeyword(strings[0], strings[1]);
+        }
+    }
+
+
 }
