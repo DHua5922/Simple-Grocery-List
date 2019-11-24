@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 public class ItemEdit extends AppCompatActivity {
 
-    private static int REQUEST = -1;
     private EditText nameInput;
     private EditText priceInput;
     private CheckBox isBoughtCheckBox;
@@ -30,14 +29,11 @@ public class ItemEdit extends AppCompatActivity {
         priceInput = findViewById(R.id.price_input);
         isBoughtCheckBox = findViewById(R.id.checkbox_isBought);
 
-        Intent request = getIntent();
+        final Intent request = getIntent();
         if(request.hasExtra(ItemAdapter.EXTRA_ITEM_ID)) {
-            REQUEST = ItemAdapter.EDIT_ITEM_REQUEST;
             nameInput.setText(request.getStringExtra(ItemAdapter.EXTRA_ITEM_NAME));
             priceInput.setText(String.valueOf(request.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0)));
-            isBoughtCheckBox.setChecked(request.getBooleanExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, false));
-        } else {
-            REQUEST = MainActivity.ADD_ITEM_REQUEST;
+            isBoughtCheckBox.setChecked(request.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0) == 1);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -49,8 +45,8 @@ public class ItemEdit extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent back = new Intent(ItemEdit.this, MainActivity.class);
-                startActivity(back);
+                setResult(RESULT_CANCELED, request);
+                finish();
             }
         });
     }
@@ -59,13 +55,7 @@ public class ItemEdit extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater menuInflater = getMenuInflater();
-        if(REQUEST == MainActivity.ADD_ITEM_REQUEST) {
-            menuInflater.inflate(R.menu.menu_add_item, menu);
-        }
-        else {
-            menuInflater.inflate(R.menu.menu_edit_item, menu);
-        }
-
+        menuInflater.inflate(R.menu.menu_edit_item, menu);
         return true;
     }
 
@@ -73,8 +63,7 @@ public class ItemEdit extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem selectedItem) {
 
         try {
-            if (selectedItem.getItemId() == R.id.btn_add_item ||
-                    selectedItem.getItemId() == R.id.overflow_save_changes) {
+            if (selectedItem.getItemId() == R.id.overflow_save_changes) {
                 finishItem();
             }
             return true;
@@ -100,8 +89,8 @@ public class ItemEdit extends AppCompatActivity {
             data.putExtra(ItemAdapter.EXTRA_ITEM_NAME, name);
             data.putExtra(ItemAdapter.EXTRA_ITEM_PRICE, price);
             data.putExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, isBought);
-            long id = getIntent().getLongExtra(ItemAdapter.EXTRA_ITEM_ID, -1);
-            if(id != -1) {
+            long id = getIntent().getLongExtra(ItemAdapter.EXTRA_ITEM_ID, 0);
+            if(id > 0) {
                 data.putExtra(ItemAdapter.EXTRA_ITEM_ID, id);
             }
 
