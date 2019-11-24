@@ -1,10 +1,12 @@
 package com.example.simplebuylist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -62,30 +65,22 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             public void onChanged(List<Store> stores) {
                 try {
                     if(stores.size() == 0) {
-                        currentStore = new Store(0, "Unnamed", 0);
-                        viewModel.insert(currentStore);
+                        Store fillerStore = new Store(1, "Unnamed", 0);
+                        long id = viewModel.insert(fillerStore);
+                        if(id > 0) {
+                            fillerStore.setId(id);
+                            currentStore = new Store(fillerStore);
+                        }
+
                     }
                     else {
                         currentStore = (currentStore != null) ? currentStore : stores.get(stores.size() - 1);
                     }
 
                     STORE_NAME = currentStore.getStoreName();
-                    viewModel.getAllItems(STORE_NAME).observe(lifecycleOwner, new Observer<List<Item>>() {
-                        @Override
-                        public void onChanged(List<Item> items) {
-                            try {
-                                items = viewModel.getItemList(STORE_NAME);
-                                itemAdapter.setItemList(items);
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    });
                     TextView listLabelView = findViewById(R.id.list_label);
                     listLabelView.setText(STORE_NAME);
+                    itemAdapter.setItemList(viewModel.getItemList(STORE_NAME));
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -93,6 +88,74 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 }
             }
         });
+
+        // drag and drop animation
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+            /**
+             * Update position of items as item display is being dragged to a new position.
+             *
+             * @param   recyclerView    list display
+             * @param   dragged         item display being dragged
+             * @param   target          item display after drag and drop
+             */
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, RecyclerView.ViewHolder dragged, RecyclerView.ViewHolder target) {
+                int fromPosition = dragged.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+                List<Item> list = itemAdapter.getItemList();
+
+                // drag down
+                if (fromPosition < toPosition) {
+                    for (int i = fromPosition; i < toPosition; i++) {
+                        // swap item order
+                        Collections.swap(list, i, i + 1);
+
+                        int order1 = list.get(i).getOrder();
+                        int order2 = list.get(i + 1).getOrder();
+                        list.get(i).setOrder(order2);
+                        list.get(i + 1).setOrder(order1);
+                    }
+                }
+                // drag up
+                else {
+                    for (int i = fromPosition; i > toPosition; i--) {
+                        // swap item order
+                        Collections.swap(list, i, i - 1);
+
+                        int order1 = list.get(i).getOrder();
+                        int order2 = list.get(i - 1).getOrder();
+                        list.get(i).setOrder(order2);
+                        list.get(i - 1).setOrder(order1);
+                    }
+                }
+                // notify adapter that item was dragged to new position
+                itemAdapter.notifyItemMoved(fromPosition, toPosition);
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+
+            /**
+             * After item was dragged to a new position, update items with new position in the database.
+             *
+             * @param   recyclerView    list display
+             * @param   viewHolder      item display
+             */
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                try {
+                    viewModel.update(itemAdapter.getItemList());
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(itemListView);
 
         // Example of a call to a native method
         //tv.setText(stringFromJNI());
@@ -145,22 +208,27 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         try {
             if(resultCode == RESULT_OK) {
                 String name = data.getStringExtra(ItemAdapter.EXTRA_ITEM_NAME);
-                Item item = new Item(
-                        data.getLongExtra(ItemAdapter.EXTRA_ITEM_ID, 0),
-                        name,
-                        data.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0),
-                        data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0),
-                        itemAdapter.getHighestOrder(),
-                        STORE_NAME
-                );
+                Item item;
 
                 if (requestCode == ADD_ITEM_REQUEST) {
-                    if (itemAdapter.add(item)) {
+                    item = new Item(
+                            data.getLongExtra(ItemAdapter.EXTRA_ITEM_ID, 0),
+                            name,
+                            data.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0),
+                            data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0),
+                            itemAdapter.getHighestOrder() + 1,
+                            STORE_NAME
+                    );
+                    if (itemAdapter.add(item))
                         Text.printMessage(this, name + " has been added");
-                    }
                     else
                         Text.printMessage(this, name + " could not be added");
                 } else if (requestCode == ItemAdapter.EDIT_ITEM_REQUEST) {
+                    item = itemAdapter.getItem(itemAdapter.getClickedItemDisplay());
+                    item.setName(name);
+                    item.setPrice(data.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0));
+                    item.setWasPurchased(data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0));
+
                     if (itemAdapter.update(item))
                         Text.printMessage(this, "Changes to " + name + " has been saved");
                     else
@@ -241,28 +309,31 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
 
                 case R.id.menu_item_delete_all:
-                    viewModel.deleteAllItems(STORE_NAME);
+                    Dialog.confirmAllItemDeletion(this, "Are you sure to want to delete all your items?", itemAdapter, viewModel);
                     return true;
                 case R.id.menu_item_delete_checked:
-                    viewModel.deleteAllCheckedItems(STORE_NAME);
+                    Dialog.confirmAllCheckedItemDeletion(this, "Are you sure to want to delete all your purchased items?", itemAdapter, viewModel);
                     return true;
                 case R.id.menu_item_delete_unchecked:
-                    viewModel.deleteAllUncheckedItems(STORE_NAME);
+                    Dialog.confirmAllUncheckedItemDeletion(this, "Are you sure to want to delete all your unpurchased items?", itemAdapter, viewModel);
                     return true;
 
 
 
                 case R.id.menu_item_search_all:
+                    itemAdapter.setItemList(viewModel.getItemList(STORE_NAME));
                     return true;
                 case R.id.menu_item_search_checked:
+                    itemAdapter.setItemList(viewModel.getCheckedItems(STORE_NAME));
                     return true;
                 case R.id.menu_item_search_unchecked:
+                    itemAdapter.setItemList(viewModel.getUncheckedItems(STORE_NAME));
                     return true;
                 case R.id.menu_item_search_name:
+                    Dialog.searchName(this, "Enter the name of the item to search for.", itemAdapter, viewModel);
                     return true;
                 case R.id.menu_item_search_keyword:
-                    return true;
-                case R.id.menu_item_search_price:
+                    Dialog.searchKeyword(this, "Enter the keyword to search items for.", itemAdapter, viewModel);
                     return true;
             }
         } catch(Exception e) {
