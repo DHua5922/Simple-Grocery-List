@@ -1,6 +1,5 @@
 package com.example.simplebuylist;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -18,14 +17,14 @@ public interface ItemDao {
     @Update
     int update(Item item);
 
+    @Update
+    int update(List<Item> itemList);
+
     @Delete
     int delete(Item item);
 
-    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName")
-    List<Item> getItemList(String storeName);
-
-    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName")
-    LiveData<List<Item>> getAllItems(String storeName);
+    @Query("SELECT name FROM ITEM_TABLE WHERE storeName = :storeName ORDER BY `order`")
+    List<String> getAllItemNames(String storeName);
 
 
 
@@ -83,4 +82,23 @@ public interface ItemDao {
 
     @Query("DELETE FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 0")
     int deleteAllUncheckedItems(String storeName);
+
+
+
+
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName ORDER BY `order`")
+    List<Item> getItemList(String storeName);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 1 ORDER BY `order`")
+    List<Item> getCheckedItems(String storeName);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND wasPurchased = 0 ORDER BY `order`")
+    List<Item> getUncheckedItems(String storeName);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND name = :name ORDER BY `order`")
+    List<Item> getItemsByName(String storeName, String name);
+
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName AND name LIKE '%' || :keyword || '%' ORDER BY `order`")
+    List<Item> getItemsByKeyword(String storeName, String keyword);
 }
