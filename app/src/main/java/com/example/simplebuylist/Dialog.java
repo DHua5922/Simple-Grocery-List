@@ -47,14 +47,14 @@ public class Dialog {
         dialogBuilder.setMessage(message);
         final AlertDialog alertDialog = dialogBuilder.getAlertDialog();
 
-        alertDialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+        dialogBuilder.getButtonCancel().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
             }
         });
 
-        alertDialog.findViewById(R.id.btn_dialog_ok).setOnClickListener(new View.OnClickListener() {
+        dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -80,14 +80,14 @@ public class Dialog {
         dialogBuilder.setMessage(message);
         final AlertDialog alertDialog = dialogBuilder.getAlertDialog();
 
-        alertDialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+        dialogBuilder.getButtonCancel().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
             }
         });
 
-        alertDialog.findViewById(R.id.btn_dialog_ok).setOnClickListener(new View.OnClickListener() {
+        dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -97,6 +97,105 @@ public class Dialog {
                     }
                     else {
                         Text.printMessage(context, "Could not delete all lists");
+                    }
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    public static void confirmAllItemDeletion (final Context context, String message, final ItemAdapter itemAdapter, final ViewModel viewModel) {
+        ConfirmationBuilder dialogBuilder = new ConfirmationBuilder(context, R.layout.dialog_confirmation);
+        dialogBuilder.setMessage(message);
+        final AlertDialog alertDialog = dialogBuilder.getAlertDialog();
+
+        dialogBuilder.getButtonCancel().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if(viewModel.deleteAllItems(MainActivity.STORE_NAME)) {
+                        itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
+                        Text.printMessage(context, "All items deleted");
+                    }
+                    else {
+                        Text.printMessage(context, "Could not delete all items");
+                    }
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    public static void confirmAllCheckedItemDeletion (final Context context, String message, final ItemAdapter itemAdapter, final ViewModel viewModel) {
+        ConfirmationBuilder dialogBuilder = new ConfirmationBuilder(context, R.layout.dialog_confirmation);
+        dialogBuilder.setMessage(message);
+        final AlertDialog alertDialog = dialogBuilder.getAlertDialog();
+
+        dialogBuilder.getButtonCancel().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if(viewModel.deleteAllCheckedItems(MainActivity.STORE_NAME)) {
+                        itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
+                        Text.printMessage(context, "All purchased items deleted");
+                    }
+                    else {
+                        Text.printMessage(context, "Could not delete all purchased items");
+                    }
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    public static void confirmAllUncheckedItemDeletion (final Context context, String message, final ItemAdapter itemAdapter, final ViewModel viewModel) {
+        ConfirmationBuilder dialogBuilder = new ConfirmationBuilder(context, R.layout.dialog_confirmation);
+        dialogBuilder.setMessage(message);
+        final AlertDialog alertDialog = dialogBuilder.getAlertDialog();
+
+        dialogBuilder.getButtonCancel().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if(viewModel.deleteAllUncheckedItems(MainActivity.STORE_NAME)) {
+                        itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
+                        Text.printMessage(context, "All unpurchased items deleted");
+                    }
+                    else {
+                        Text.printMessage(context, "Could not delete all unpurchased items");
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -135,7 +234,9 @@ public class Dialog {
                                 viewModel.delete(unnamedStore);
 
                             Store newStore = new Store(0, newStoreName, 0);
-                            if(viewModel.insert(newStore)) {
+                            long id = viewModel.insert(newStore);
+                            if(id > 0) {
+                                newStore.setId(id);
                                 MainActivity.currentStore = newStore;
                                 alertDialog.dismiss();
                             } else {
@@ -244,6 +345,75 @@ public class Dialog {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void searchName(final Context context, String message, final ItemAdapter itemAdapter, final ViewModel viewModel) throws ExecutionException, InterruptedException {
+        final ListPromptBuilder listPromptBuilder =
+                new ListPromptBuilder(context, R.layout.dialog_list_prompt);
+        final AlertDialog alertDialog = listPromptBuilder.getAlertDialog();
+        listPromptBuilder.setDropdown(R.layout.dropdown, viewModel.getAllItemNames(MainActivity.STORE_NAME));
+        listPromptBuilder.setHint(R.string.hint_list_name_input);
+        listPromptBuilder.setMessage(message);
+
+        alertDialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.findViewById(R.id.btn_dialog_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String nameInput = listPromptBuilder.getInputAutoComplete().getText().toString();
+                if(!nameInput.isEmpty()) {
+                    try {
+                        itemAdapter.setItemList(viewModel.getItemsByName(MainActivity.STORE_NAME, nameInput));
+                        alertDialog.dismiss();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Text.printMessage(context, "Name cannot be empty");
+                }
+            }
+        });
+    }
+
+    public static void searchKeyword(final Context context, String message, final ItemAdapter itemAdapter, final ViewModel viewModel) {
+        final ListPromptBuilder listPromptBuilder =
+                new ListPromptBuilder(context, R.layout.dialog_list_prompt);
+        final AlertDialog alertDialog = listPromptBuilder.getAlertDialog();
+        listPromptBuilder.setHint(R.string.hint_list_name_input);
+        listPromptBuilder.setMessage(message);
+
+        alertDialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.findViewById(R.id.btn_dialog_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String keyword = listPromptBuilder.getInputAutoComplete().getText().toString();
+                if(!keyword.isEmpty()) {
+                    try {
+                        itemAdapter.setItemList(viewModel.getItemsByKeyword(MainActivity.STORE_NAME, keyword));
+                        alertDialog.dismiss();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Text.printMessage(context, "Field cannot be empty");
                 }
             }
         });
