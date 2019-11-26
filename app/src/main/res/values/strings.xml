@@ -52,4 +52,6 @@
     <string name="menu_item_search_checked">Get All Checked Items</string>
     <string name="menu_item_search_unchecked">Get All Unchecked Items</string>
     <string name="menu_item_search_all">Get All Items</string>
+
+    <string name="back_btn_description">Button that takes user back to page that displays list of items</string>
 </resources>
