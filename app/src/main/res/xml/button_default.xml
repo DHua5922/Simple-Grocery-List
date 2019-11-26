@@ -4,7 +4,7 @@
         android:radius="0dp"
         />
     <solid
-        android:color="#24A0FF"
+        android:color="@color/toolbar_add_item_btn"
         />
     <size
         android:width="270dp"

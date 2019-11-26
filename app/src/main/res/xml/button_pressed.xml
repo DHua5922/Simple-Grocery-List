@@ -4,7 +4,7 @@
         android:radius="0dp"
         />
     <solid
-        android:color="#FF9A36"
+        android:color="@color/pressed_dropdown_item"
         />
     <size
         android:width="270dp"
