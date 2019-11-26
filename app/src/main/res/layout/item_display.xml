@@ -9,8 +9,9 @@
 
     <CheckBox
         android:id="@+id/checkbox_isBought"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/checkbox_gap"
+        android:layout_marginRight="@dimen/checkbox_gap"
+        style="@style/CheckBox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/item_info"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,24 +30,19 @@
 
         <TextView
             android:id="@+id/nameView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            style="@style/NameDisplay">
         </TextView>
 
         <TextView
             android:id="@+id/priceView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="italic">
+            style="@style/PriceDisplay">
         </TextView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_item_action"
-        android:layout_height="0dp"
-        android:layout_width="wrap_content"
-        android:src="@drawable/img_more_options"
+        style="@style/ItemOverFlowIcon"
         app:layout_constraintStart_toEndOf="@+id/item_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
