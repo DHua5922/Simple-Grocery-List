@@ -3,18 +3,45 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/light_grey</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <!-- Changes overflow icon color in menu -->
+        <item name="actionOverflowButtonStyle">@style/MenuOverFlowIcon</item>
     </style>
 
+    <!-- Resize small text in popup menu -->
+    <style name="myPopupMenuTextAppearanceSmall" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text</item>
+    </style>
+
+    <!-- Resize large text in popup menu -->
+    <style name="myPopupMenuTextAppearanceLarge" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text</item>
+    </style>
+
+    <!-- style for overflow icon in toolbar -->
+    <style name="MenuOverFlowIcon" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <!-- style for overflow icon in toolbar -->
+    <style name="ItemOverFlowIcon">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:src">@drawable/img_more_options</item>
+    </style>
+
+    <!-- style for toolbar -->
     <style name="ToolbarStyle" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/toolbar_add_item_btn</item>
     </style>
 
+    <!-- style for button that adds new items -->
     <style name="AddButton">
         <item name="android:src">@drawable/img_add_item</item>
         <item name="android:layout_width">@dimen/btn_add_size</item>
@@ -24,6 +51,7 @@
         <item name="android:layout_marginBottom">@dimen/btn_add_margin</item>
     </style>
 
+    <!-- style for list that displays items -->
     <style name="ItemList">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
@@ -33,6 +61,7 @@
         <item name="android:layout_marginRight">@dimen/item_list_padding</item>
     </style>
 
+    <!-- style for page that shows content of existing or new items -->
     <style name="ItemContent">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
@@ -40,22 +69,27 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <!-- style for labels in page that shows content of existing or new items -->
     <style name="Label">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- style for title in toolbar -->
     <style name="ToolbarLabel" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
+    <!-- style for input field -->
     <style name="Input">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:inputType">textAutoComplete</item>
     </style>
 
+    <!-- style for input field with label -->
     <style name="ItemLabelAndInput">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -63,11 +97,13 @@
         <item name="android:layout_marginBottom">@dimen/item_content_margin</item>
     </style>
 
-    <style name="CheckBox">
+    <!-- style for checkbox -->
+    <style name="CheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- style for back button in page that adds or edits items -->
     <style name="BackIcon">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
@@ -78,6 +114,7 @@
         <item name="android:paddingTop">@dimen/img_padding</item>
     </style>
 
+    <!-- style for message that confirms user action -->
     <style name="ConfirmationMessage">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -86,12 +123,14 @@
 
     </style>
 
+    <!-- style for buttons aligned horizontally  -->
     <style name="HorizontalLinearLayout">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
+    <!-- style for button in dialog -->
     <style name="DialogButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -101,6 +140,7 @@
         <item name="android:background">@xml/button</item>
     </style>
 
+    <!-- style for each of the button above list of items -->
     <style name="ListCtrlButton">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -111,9 +151,27 @@
         <item name="android:onClick">showMenu</item>
     </style>
 
+    <!-- style for dialog -->
     <style name="Dialog">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:padding">@dimen/dialog_padding</item>
+    </style>
+
+    <!-- style for name display -->
+    <style name="NameDisplay">
+        <item name="android:textSize">@dimen/name_display</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- style for price display -->
+    <style name="PriceDisplay">
+        <item name="android:textSize">@dimen/price_display</item>
+        <item name="android:textColor">@color/price</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">italic</item>
     </style>
 </resources>
