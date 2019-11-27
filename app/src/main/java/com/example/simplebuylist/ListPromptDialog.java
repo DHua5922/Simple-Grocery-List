@@ -6,11 +6,11 @@ import android.widget.AutoCompleteTextView;
 
 import java.util.List;
 
-public class ListPromptBuilder extends DialogBuilder {
+public class ListPromptDialog extends Dialog {
 
     private AutoCompleteTextView autoCompleteTextView;
 
-    public ListPromptBuilder(Context context, int dialogLayoutID) {
+    public ListPromptDialog(Context context, int dialogLayoutID) {
         super(context, dialogLayoutID);
         setInputAutoComplete();
     }
