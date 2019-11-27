@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorAccent">#D81B60</color>
     <color name="light_grey">#D3D3D3</color>
     <color name="white">#FFFFFF</color>
     <color name="toolbar_add_item_btn">#24A0FF</color>
