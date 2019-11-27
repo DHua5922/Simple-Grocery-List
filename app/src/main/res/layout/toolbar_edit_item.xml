@@ -9,13 +9,20 @@
 
         <ImageButton
             android:id="@+id/back_btn"
-            style="@style/BackIcon"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_back"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/img_padding"
             android:contentDescription="@string/back_btn_description">
         </ImageButton>
 
         <TextView
             android:id="@+id/label_action"
-            style="@style/ToolbarLabel">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text">
         </TextView>
 
     </androidx.appcompat.widget.Toolbar>

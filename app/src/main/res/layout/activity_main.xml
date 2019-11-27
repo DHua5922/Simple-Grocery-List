@@ -57,7 +57,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/item_list"
-        style="@style/ItemList"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_marginLeft="@dimen/item_list_padding"
+        android:layout_marginStart="@dimen/item_list_padding"
+        android:layout_marginRight="@dimen/item_list_padding"
+        android:layout_marginEnd="@dimen/item_list_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,8 +73,14 @@
 
     <ImageView
         android:id="@+id/btn_add_item"
-        style="@style/AddButton"
+        android:src="@drawable/img_add_item"
+        android:layout_height="@dimen/btn_add_size"
+        android:layout_width="@dimen/btn_add_size"
+        android:layout_marginEnd="@dimen/btn_add_margin"
+        android:layout_marginRight="@dimen/btn_add_margin"
+        android:layout_marginBottom="@dimen/btn_add_margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/add_btn_description"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

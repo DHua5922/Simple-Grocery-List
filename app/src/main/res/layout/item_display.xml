@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/item_display_padding"
     android:padding="@dimen/item_display_padding"
-    android:background="@color/white"
+    android:background="@android:color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <CheckBox
@@ -30,19 +30,28 @@
 
         <TextView
             android:id="@+id/nameView"
-            style="@style/NameDisplay">
+            android:textSize="@dimen/name_display"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         </TextView>
 
         <TextView
             android:id="@+id/priceView"
-            style="@style/PriceDisplay">
+            android:textSize="@dimen/price_display"
+            android:textColor="@color/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic">
         </TextView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_item_action"
-        style="@style/ItemOverFlowIcon"
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:src="@drawable/img_more_options"
         app:layout_constraintStart_toEndOf="@+id/item_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
