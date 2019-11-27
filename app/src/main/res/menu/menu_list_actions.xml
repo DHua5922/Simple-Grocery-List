@@ -8,11 +8,6 @@
             android:title="@string/new_list"
             app:showAsAction="ifRoom"/>
         <item
-            android:id="@+id/option_open_list"
-            android:icon="@drawable/icon_open"
-            android:title="@string/open_list"
-            app:showAsAction="ifRoom"/>
-        <item
             android:id="@+id/option_rename_list"
             android:icon="@drawable/icon_edit"
             android:title="@string/rename_list"
