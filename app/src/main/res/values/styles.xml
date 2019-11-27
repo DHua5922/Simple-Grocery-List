@@ -10,6 +10,16 @@
         <item name="actionOverflowButtonStyle">@style/MenuOverFlowIcon</item>
     </style>
 
+    <!-- style for toast message -->
+    <style name="ToastText">
+        <item name="android:textSize">@dimen/text</item>
+        <item name="android:padding">@dimen/toast_padding</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <!-- Resize small text in popup menu -->
     <style name="myPopupMenuTextAppearanceSmall" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Small">
         <item name="android:textColor">@color/black</item>
@@ -25,6 +35,7 @@
     <!-- style for overflow icon in toolbar -->
     <style name="MenuOverFlowIcon" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/white</item>
+        <item name="android:src">@drawable/img_more_options</item>
     </style>
 
     <!-- style for overflow icon in toolbar -->
@@ -73,6 +84,8 @@
     <style name="Label">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <!-- style for title in toolbar -->
@@ -80,6 +93,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text</item>
     </style>
 
     <!-- style for input field -->
@@ -87,6 +101,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:inputType">textAutoComplete</item>
+        <item name="android:textSize">@dimen/text</item>
     </style>
 
     <!-- style for input field with label -->
@@ -101,6 +116,7 @@
     <style name="CheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text</item>
     </style>
 
     <!-- style for back button in page that adds or edits items -->
