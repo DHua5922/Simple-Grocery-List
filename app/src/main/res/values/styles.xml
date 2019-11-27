@@ -2,12 +2,23 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- action bar, recents -->
+        <item name="colorPrimary">@color/toolbar_add_item_btn</item>
+        <!-- status bar -->
+        <item name="colorPrimaryDark">@color/black</item>
+        <!-- check boxes, progress bars, etc -->
+        <item name="colorAccent">@color/colorAccent</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/light_grey</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
         <!-- Changes overflow icon color in menu -->
         <item name="actionOverflowButtonStyle">@style/MenuOverFlowIcon</item>
+    </style>
+
+    <!-- style for splash screen -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
     <!-- style for toast message -->
