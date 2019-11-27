@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Simple Buy List</string>
+    <string name="app_name">Simple Shopping List</string>
 
     <string name="label_isBought">Purchased?</string>
     <string name="item_overflow_add">Add Item</string>
