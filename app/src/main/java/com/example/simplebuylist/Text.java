@@ -14,9 +14,9 @@ public class Text {
     public static final int FAIL = 0;
 
     public static void printMessage(Context context, String message, int status) {
-        View layout = LayoutInflater.from(context).inflate(R.layout.toast, null);
+        View layout = LayoutInflater.from(context).inflate(R.layout.dropdown, null);
 
-        TextView toastMessage = layout.findViewById(R.id.toast_msg);
+        TextView toastMessage = layout.findViewById(R.id.dropdown_item);
         int imgId = (status == SUCCESS) ? R.drawable.icon_check : R.drawable.icon_fail;
         toastMessage.setCompoundDrawablePadding(20);
         toastMessage.setCompoundDrawablesWithIntrinsicBounds(imgId, 0, 0, 0);
