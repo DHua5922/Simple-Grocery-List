@@ -220,9 +220,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                             STORE_NAME
                     );
                     if (itemAdapter.add(item))
-                        Text.printMessage(this, name + " has been added");
+                        Text.printMessage(this, name + " has been added", Text.SUCCESS);
                     else
-                        Text.printMessage(this, name + " could not be added");
+                        Text.printMessage(this, name + " could not be added", Text.FAIL);
                 } else if (requestCode == ItemAdapter.EDIT_ITEM_REQUEST) {
                     item = itemAdapter.getItem(itemAdapter.getClickedItemDisplay());
                     item.setName(name);
@@ -230,9 +230,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                     item.setWasPurchased(data.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0));
 
                     if (itemAdapter.update(item))
-                        Text.printMessage(this, "Changes to " + name + " has been saved");
+                        Text.printMessage(this, "Changes to " + name + " has been saved", Text.SUCCESS);
                     else
-                        Text.printMessage(this, "Changes to " + name + " could not be saved");
+                        Text.printMessage(this, "Changes to " + name + " could not be saved", Text.FAIL);
                 }
             }
         } catch (ExecutionException e) {

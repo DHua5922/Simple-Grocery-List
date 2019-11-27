@@ -27,10 +27,10 @@ public class Dialog {
             public void onClick(View view) {
                 try {
                     if(itemAdapter.delete(item)) {
-                        Text.printMessage(context, "Item deleted");
+                        Text.printMessage(context, "Item deleted", Text.SUCCESS);
                     }
                     else {
-                        Text.printMessage(context, "Could not delete item");
+                        Text.printMessage(context, "Could not delete item", Text.FAIL);
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -60,10 +60,10 @@ public class Dialog {
                 try {
                     if(viewModel.delete(MainActivity.currentStore)) {
                         MainActivity.currentStore = null;
-                        Text.printMessage(context, "List deleted");
+                        Text.printMessage(context, "List deleted", Text.SUCCESS);
                     }
                     else {
-                        Text.printMessage(context, "Could not delete this list");
+                        Text.printMessage(context, "Could not delete this list", Text.FAIL);
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -93,10 +93,10 @@ public class Dialog {
                 try {
                     if(viewModel.deleteAll()) {
                         MainActivity.currentStore = null;
-                        Text.printMessage(context, "All lists deleted");
+                        Text.printMessage(context, "All lists deleted", Text.SUCCESS);
                     }
                     else {
-                        Text.printMessage(context, "Could not delete all lists");
+                        Text.printMessage(context, "Could not delete all lists", Text.FAIL);
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -126,10 +126,10 @@ public class Dialog {
                 try {
                     if(viewModel.deleteAllItems(MainActivity.STORE_NAME)) {
                         itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
-                        Text.printMessage(context, "All items deleted");
+                        Text.printMessage(context, "All items deleted", Text.SUCCESS);
                     }
                     else {
-                        Text.printMessage(context, "Could not delete all items");
+                        Text.printMessage(context, "Could not delete all items", Text.FAIL);
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -159,10 +159,10 @@ public class Dialog {
                 try {
                     if(viewModel.deleteAllCheckedItems(MainActivity.STORE_NAME)) {
                         itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
-                        Text.printMessage(context, "All purchased items deleted");
+                        Text.printMessage(context, "All purchased items deleted", Text.SUCCESS);
                     }
                     else {
-                        Text.printMessage(context, "Could not delete all purchased items");
+                        Text.printMessage(context, "Could not delete all purchased items", Text.FAIL);
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -192,10 +192,10 @@ public class Dialog {
                 try {
                     if(viewModel.deleteAllUncheckedItems(MainActivity.STORE_NAME)) {
                         itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
-                        Text.printMessage(context, "All unpurchased items deleted");
+                        Text.printMessage(context, "All unpurchased items deleted", Text.SUCCESS);
                     }
                     else {
-                        Text.printMessage(context, "Could not delete all unpurchased items");
+                        Text.printMessage(context, "Could not delete all unpurchased items", Text.FAIL);
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -240,10 +240,10 @@ public class Dialog {
                                 MainActivity.currentStore = newStore;
                                 alertDialog.dismiss();
                             } else {
-                                Text.printMessage(context, "Could not create new list: " + newStoreName);
+                                Text.printMessage(context, "Could not create new list: " + newStoreName, Text.FAIL);
                             }
                         } else {
-                            Text.printMessage(context, newStoreName + " already exists");
+                            Text.printMessage(context, newStoreName + " already exists", Text.FAIL);
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -251,7 +251,7 @@ public class Dialog {
                         e.printStackTrace();
                     }
                 } else {
-                    Text.printMessage(context, "Name cannot be empty");
+                    Text.printMessage(context, "Name cannot be empty", Text.FAIL);
                 }
             }
         });
@@ -286,10 +286,10 @@ public class Dialog {
                                 MainActivity.currentStore = updatedStore;
                                 alertDialog.dismiss();
                             } else {
-                                Text.printMessage(context, "Could not rename this list to " + newStoreName);
+                                Text.printMessage(context, "Could not rename this list to " + newStoreName, Text.FAIL);
                             }
                         } else {
-                            Text.printMessage(context, newStoreName + " already exists");
+                            Text.printMessage(context, newStoreName + " already exists", Text.FAIL);
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -297,7 +297,7 @@ public class Dialog {
                         e.printStackTrace();
                     }
                 } else {
-                    Text.printMessage(context, "Name cannot be empty");
+                    Text.printMessage(context, "Name cannot be empty", Text.FAIL);
                 }
             }
         });
@@ -339,7 +339,7 @@ public class Dialog {
 
                             alertDialog.dismiss();
                     } else {
-                        Text.printMessage(context, storeNameToSee + " does not exist");
+                        Text.printMessage(context, storeNameToSee + " does not exist", Text.FAIL);
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -379,7 +379,7 @@ public class Dialog {
                         e.printStackTrace();
                     }
                 } else {
-                    Text.printMessage(context, "Name cannot be empty");
+                    Text.printMessage(context, "Name cannot be empty", Text.FAIL);
                 }
             }
         });
@@ -413,7 +413,7 @@ public class Dialog {
                         e.printStackTrace();
                     }
                 } else {
-                    Text.printMessage(context, "Field cannot be empty");
+                    Text.printMessage(context, "Field cannot be empty", Text.FAIL);
                 }
             }
         });

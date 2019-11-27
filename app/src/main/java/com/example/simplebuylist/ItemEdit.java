@@ -68,7 +68,7 @@ public class ItemEdit extends AppCompatActivity {
             }
             return true;
         } catch (IllegalArgumentException e) {
-            Text.printMessage(this, "Invalid price");
+            Text.printMessage(this, "Invalid price", Text.FAIL);
         }
 
         return super.onOptionsItemSelected(selectedItem);
@@ -77,7 +77,7 @@ public class ItemEdit extends AppCompatActivity {
     private void finishItem() {
         String name = nameInput.getText().toString();
         if(name.isEmpty()) {
-            Text.printMessage(this, "Name cannot be empty");
+            Text.printMessage(this, "Name cannot be empty", Text.FAIL);
         }
         else {
             double price = Double.parseDouble(priceInput.getText().toString());
