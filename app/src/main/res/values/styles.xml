@@ -5,7 +5,7 @@
         <!-- action bar, recents -->
         <item name="colorPrimary">@color/toolbar_add_item_btn</item>
         <!-- status bar -->
-        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
         <!-- check boxes, progress bars, etc -->
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Customize your theme here. -->
@@ -21,38 +21,21 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <!-- style for toast message -->
-    <style name="ToastText">
-        <item name="android:textSize">@dimen/text</item>
-        <item name="android:padding">@dimen/toast_padding</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:background">@color/white</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
     <!-- Resize small text in popup menu -->
     <style name="myPopupMenuTextAppearanceSmall" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Small">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/text</item>
     </style>
 
     <!-- Resize large text in popup menu -->
     <style name="myPopupMenuTextAppearanceLarge" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Large">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/text</item>
     </style>
 
     <!-- style for overflow icon in toolbar -->
     <style name="MenuOverFlowIcon" parent="Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:tint">@color/white</item>
-        <item name="android:src">@drawable/img_more_options</item>
-    </style>
-
-    <!-- style for overflow icon in toolbar -->
-    <style name="ItemOverFlowIcon">
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:tint">@android:color/white</item>
         <item name="android:src">@drawable/img_more_options</item>
     </style>
 
@@ -63,48 +46,12 @@
         <item name="android:background">@color/toolbar_add_item_btn</item>
     </style>
 
-    <!-- style for button that adds new items -->
-    <style name="AddButton">
-        <item name="android:src">@drawable/img_add_item</item>
-        <item name="android:layout_width">@dimen/btn_add_size</item>
-        <item name="android:layout_height">@dimen/btn_add_size</item>
-        <item name="android:layout_marginRight">@dimen/btn_add_margin</item>
-        <item name="android:layout_marginEnd">@dimen/btn_add_margin</item>
-        <item name="android:layout_marginBottom">@dimen/btn_add_margin</item>
-    </style>
-
-    <!-- style for list that displays items -->
-    <style name="ItemList">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_marginStart">@dimen/item_list_padding</item>
-        <item name="android:layout_marginLeft">@dimen/item_list_padding</item>
-        <item name="android:layout_marginEnd">@dimen/item_list_padding</item>
-        <item name="android:layout_marginRight">@dimen/item_list_padding</item>
-    </style>
-
-    <!-- style for page that shows content of existing or new items -->
-    <style name="ItemContent">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:padding">@dimen/item_content_padding</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
     <!-- style for labels in page that shows content of existing or new items -->
     <style name="Label">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/text</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <!-- style for title in toolbar -->
-    <style name="ToolbarLabel" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <!-- style for input field -->
@@ -130,23 +77,12 @@
         <item name="android:textSize">@dimen/text</item>
     </style>
 
-    <!-- style for back button in page that adds or edits items -->
-    <style name="BackIcon">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:src">@drawable/ic_back</item>
-        <item name="android:background">@color/transparent</item>
-        <item name="android:paddingBottom">@dimen/img_padding</item>
-        <item name="android:paddingRight">@dimen/img_padding</item>
-        <item name="android:paddingTop">@dimen/img_padding</item>
-    </style>
-
     <!-- style for message that confirms user action -->
     <style name="ConfirmationMessage">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/text</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@android:color/black</item>
 
     </style>
 
@@ -162,7 +98,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/text</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@xml/button</item>
     </style>
@@ -172,7 +108,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">@dimen/text</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@xml/button</item>
         <item name="android:onClick">showMenu</item>
@@ -183,22 +119,5 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:padding">@dimen/dialog_padding</item>
-    </style>
-
-    <!-- style for name display -->
-    <style name="NameDisplay">
-        <item name="android:textSize">@dimen/name_display</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <!-- style for price display -->
-    <style name="PriceDisplay">
-        <item name="android:textSize">@dimen/price_display</item>
-        <item name="android:textColor">@color/price</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textStyle">italic</item>
     </style>
 </resources>
