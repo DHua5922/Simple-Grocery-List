@@ -226,7 +226,7 @@ public class ItemAdapter extends ListAdapter<Item, ItemAdapter.ItemHolder> imple
                 context.startActivityForResult(intent, EDIT_ITEM_REQUEST);
                 return true;
             case R.id.option_delete_item:
-                Dialog.confirmItemDeletion(context, context.getString(R.string.confirmation_deletion_msg), this, chosenItem);
+                DialogAction.confirmItemDeletion(context, context.getString(R.string.confirmation_deletion_msg), this, chosenItem);
                 return true;
             default:
                 return false;
