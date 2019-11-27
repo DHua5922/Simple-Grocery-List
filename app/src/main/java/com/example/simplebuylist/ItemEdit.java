@@ -38,6 +38,7 @@ public class ItemEdit extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         TextView labelActionView = findViewById(R.id.label_action);
         labelActionView.setText(request.getStringExtra(ItemAdapter.EXTRA_ACTION));
 
