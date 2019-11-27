@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,14 +14,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Spinner;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, AdapterView.OnItemSelectedListener {
 
     public static final int ADD_ITEM_REQUEST = 0;
     public static String STORE_NAME = "Unnamed";
@@ -42,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+
+        final ViewModel viewModel = new ViewModel(getApplication());
 
         ImageView addItemBtn = findViewById(R.id.btn_add_item);
         addItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -53,14 +57,29 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         });
 
-        final ViewModel viewModel = new ViewModel(getApplication());
         RecyclerView itemListView = findViewById(R.id.item_list);
         itemListView.setLayoutManager(new LinearLayoutManager(this));
         itemAdapter = new ItemAdapter(this, viewModel);
         itemListView.setAdapter(itemAdapter);
 
-        final LifecycleOwner lifecycleOwner = this;
-        viewModel.getAllStores().observe(lifecycleOwner, new Observer<List<Store>>() {
+        ArrayAdapter<String> adapter = null;
+        try {
+            Spinner spinner = findViewById(R.id.list_label);
+            spinner.setOnItemSelectedListener(this);
+            // Create an ArrayAdapter using the string array and a custom spinner layout
+            adapter = new ArrayAdapter<>(this, R.layout.spinner_dropdown, R.id.spinner_item_label, viewModel.getAllStoreNames());
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        final ArrayAdapter<String> finalAdapter = adapter;
+        viewModel.getAllStores().observe(this, new Observer<List<Store>>() {
             @Override
             public void onChanged(List<Store> stores) {
                 try {
@@ -78,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                     }
 
                     STORE_NAME = currentStore.getStoreName();
-                    TextView listLabelView = findViewById(R.id.list_label);
-                    listLabelView.setText(STORE_NAME);
+                    finalAdapter.clear();
+                    finalAdapter.addAll(viewModel.getAllStoreNames());
                     itemAdapter.setItemList(viewModel.getItemList(STORE_NAME));
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -174,20 +193,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         try {
             switch(selectedItem.getItemId()) {
                 case R.id.option_new_list:
-                    Dialog.createList(this, "Enter a name for the new list", viewModel);
+                    DialogAction.createList(this, "Enter a name for the new list", viewModel);
                     break;
                 case R.id.option_rename_list:
-                    Dialog.renameList(this, "Enter a new name for this list", viewModel);
-                    break;
-                case R.id.option_open_list:
-                    TextView listLabelView = findViewById(R.id.list_label);
-                    Dialog.openList(this, "Choose which list to open", viewModel, itemAdapter, listLabelView);
+                    DialogAction.renameList(this, "Enter a new name for this list", viewModel);
                     break;
                 case R.id.option_delete_list:
-                    Dialog.confirmListDeletion(this, "Are you sure you want to delete this list?", viewModel);
+                    DialogAction.confirmListDeletion(this, "Are you sure you want to delete this list?", viewModel);
                     break;
                 case R.id.option_delete_all_lists:
-                    Dialog.confirmAllListDeletion(this, "Are you sure you want to delete all your lists?", viewModel);
+                    DialogAction.confirmAllListDeletion(this, "Are you sure you want to delete all your lists?", viewModel);
                     break;
             }
         } catch (ExecutionException e) {
@@ -309,13 +324,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
 
                 case R.id.menu_item_delete_all:
-                    Dialog.confirmAllItemDeletion(this, "Are you sure to want to delete all your items?", itemAdapter, viewModel);
+                    DialogAction.confirmAllItemDeletion(this, "Are you sure to want to delete all your items?", itemAdapter, viewModel);
                     return true;
                 case R.id.menu_item_delete_checked:
-                    Dialog.confirmAllCheckedItemDeletion(this, "Are you sure to want to delete all your purchased items?", itemAdapter, viewModel);
+                    DialogAction.confirmAllCheckedItemDeletion(this, "Are you sure to want to delete all your purchased items?", itemAdapter, viewModel);
                     return true;
                 case R.id.menu_item_delete_unchecked:
-                    Dialog.confirmAllUncheckedItemDeletion(this, "Are you sure to want to delete all your unpurchased items?", itemAdapter, viewModel);
+                    DialogAction.confirmAllUncheckedItemDeletion(this, "Are you sure to want to delete all your unpurchased items?", itemAdapter, viewModel);
                     return true;
 
 
@@ -330,10 +345,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                     itemAdapter.setItemList(viewModel.getUncheckedItems(STORE_NAME));
                     return true;
                 case R.id.menu_item_search_name:
-                    Dialog.searchName(this, "Enter the name of the item to search for.", itemAdapter, viewModel);
+                    DialogAction.searchName(this, "Enter the name of the item to search for.", itemAdapter, viewModel);
                     return true;
                 case R.id.menu_item_search_keyword:
-                    Dialog.searchKeyword(this, "Enter the keyword to search items for.", itemAdapter, viewModel);
+                    DialogAction.searchKeyword(this, "Enter the keyword to search items for.", itemAdapter, viewModel);
                     return true;
             }
         } catch(Exception e) {
@@ -343,9 +358,29 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         return false;
     }
 
+
+
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        ViewModel viewModel = new ViewModel(getApplication());
+        String chosenList = parent.getItemAtPosition(pos).toString();
+        try {
+            itemAdapter.setItemList(viewModel.getItemList(chosenList));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }
