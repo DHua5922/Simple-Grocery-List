@@ -54,6 +54,20 @@ public class Item {
     }
 
     /**
+     * Constructs a new item with the given item.
+     *
+     * @param item  given item
+     */
+    public Item(Item item) {
+        setId(item.getId());
+        setName(item.getName());
+        setPrice(item.getPrice());
+        setWasPurchased(item.wasPurchased());
+        setOrder(item.getOrder());
+        setStoreName(item.getStoreName());
+    }
+
+    /**
      * Gets the id of this item.
      *
      * @return  id of this item
