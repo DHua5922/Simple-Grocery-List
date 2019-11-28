@@ -1,5 +1,6 @@
 package com.example.simplebuylist;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -26,7 +27,8 @@ public interface ItemDao {
     @Query("SELECT name FROM ITEM_TABLE WHERE storeName = :storeName ORDER BY `order`")
     List<String> getAllItemNames(String storeName);
 
-
+    @Query("SELECT * FROM ITEM_TABLE WHERE storeName = :storeName ORDER BY `order`")
+    LiveData<List<Item>> observeAllItems(String storeName);
 
 
 

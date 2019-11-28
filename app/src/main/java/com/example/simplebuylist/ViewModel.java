@@ -67,6 +67,10 @@ public class ViewModel extends AndroidViewModel {
         return repository.getAllItemNames(storeName);
     }
 
+    public LiveData<List<Item>> observeAllItems(String storeName) {
+        return repository.observeAllItems(storeName);
+    }
+
 
 
 

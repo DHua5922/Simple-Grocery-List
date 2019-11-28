@@ -70,6 +70,10 @@ public class Repository {
         return new GetAllItemNamesAsyncTask(itemDao).execute(storeName).get();
     }
 
+    public LiveData<List<Item>> observeAllItems(String storeName) {
+        return itemDao.observeAllItems(storeName);
+    }
+
 
 
 
