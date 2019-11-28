@@ -54,4 +54,6 @@
     <string name="add_btn_description">Button that adds new item to list</string>
     <string name="back_btn_description">Button that takes user back to page that displays list of items</string>
     <string name="list_icon_description">Icon that indicates list item</string>
+
+    <string name="total_price">Total Price: $%.2f</string>
 </resources>
