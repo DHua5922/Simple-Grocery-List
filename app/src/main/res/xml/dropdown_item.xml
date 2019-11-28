@@ -9,6 +9,6 @@
     </item>
 
     <item>
-        <color android:color="@color/white"/>
+        <color android:color="@android:color/white"/>
     </item>
 </selector>
