@@ -224,24 +224,34 @@ public class DialogAction {
             @Override
             public void onClick(View view) {
                 String newStoreName = listPromptDialog.getInputAutoComplete().getText().toString();
+                String message = "Could not create new list: " + newStoreName;
+                int status = Text.FAIL;
+
                 if(!newStoreName.isEmpty()) {
                     try {
                         if (viewModel.getGivenStore(newStoreName) == null) {
                             Store unnamedStore = viewModel.getGivenStore("Unnamed");
-                            if(unnamedStore != null)
-                                viewModel.delete(unnamedStore);
-
-                            Store newStore = new Store(0, newStoreName, 0);
-                            long id = viewModel.insert(newStore);
-                            if(id > 0) {
-                                newStore.setId(id);
-                                MainActivity.currentStore = newStore;
-                                alertDialog.dismiss();
+                            if(unnamedStore != null) {
+                                unnamedStore.setStoreName(newStoreName);
+                                if(viewModel.update(unnamedStore)) {
+                                    MainActivity.currentStore = unnamedStore;
+                                    message = newStoreName + " has been created";
+                                    status = Text.SUCCESS;
+                                    alertDialog.dismiss();
+                                }
                             } else {
-                                Text.printMessage(context, "Could not create new list: " + newStoreName, Text.FAIL);
+                                Store newStore = new Store(0, newStoreName);
+                                long id = viewModel.insert(newStore);
+                                if(id > 0) {
+                                    newStore.setId(id);
+                                    MainActivity.currentStore = newStore;
+                                    message = newStoreName + " has been created";
+                                    status = Text.SUCCESS;
+                                    alertDialog.dismiss();
+                                }
                             }
                         } else {
-                            Text.printMessage(context, newStoreName + " already exists", Text.FAIL);
+                            message = newStoreName + " already exists";
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -249,8 +259,9 @@ public class DialogAction {
                         e.printStackTrace();
                     }
                 } else {
-                    Text.printMessage(context, "Name cannot be empty", Text.FAIL);
+                    message = "New store name cannot be empty";
                 }
+                Text.printMessage(context, message, status);
             }
         });
     }
