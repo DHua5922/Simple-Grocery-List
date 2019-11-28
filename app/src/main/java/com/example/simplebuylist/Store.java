@@ -28,19 +28,16 @@ public class Store {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String storeName;
-    private double totalPrice;
 
     /**
      * Constructs the new store to buy at with the given id, store name, and total price.
      *
      * @param id            id
      * @param storeName     store name
-     * @param totalPrice    total price of items that will be bought
      */
-    public Store(long id, String storeName, double totalPrice) {
+    public Store(long id, String storeName) {
         setId(id);
         setStoreName(storeName);
-        setTotalPrice(totalPrice);
     }
 
     /**
@@ -52,7 +49,6 @@ public class Store {
     public Store(Store store) {
         setId(store.getId());
         setStoreName(store.getStoreName());
-        setTotalPrice(store.getTotalPrice());
     }
 
     /**
@@ -89,23 +85,5 @@ public class Store {
      */
     public void setStoreName(String storeName) {
         this.storeName = storeName;
-    }
-
-    /**
-     * Gets the total price of all the items the user will buy at this store.
-     *
-     * @return  total price of all the items the user will buy at this store
-     */
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    /**
-     * Sets the total price of all the items the user will buy at this store.
-     *
-     * @param totalPrice total price of all the items the user will buy at this store
-     */
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
     }
 }
