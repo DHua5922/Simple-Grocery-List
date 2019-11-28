@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,12 +42,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // remove default toolbar title
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
 
-        final ViewModel viewModel = new ViewModel(getApplication());
-
+        // make add button add new item
         ImageView addItemBtn = findViewById(R.id.btn_add_item);
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,14 +58,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         });
 
+        final ViewModel viewModel = new ViewModel(getApplication());
+
         RecyclerView itemListView = findViewById(R.id.item_list);
         itemListView.setLayoutManager(new LinearLayoutManager(this));
         itemAdapter = new ItemAdapter(this, viewModel);
         itemListView.setAdapter(itemAdapter);
 
+        // create initial list of store labels
         ArrayAdapter<String> adapter = null;
+        final Spinner spinner = findViewById(R.id.list_label);
         try {
-            Spinner spinner = findViewById(R.id.list_label);
             spinner.setOnItemSelectedListener(this);
             // Create an ArrayAdapter using the string array and a custom spinner layout
             adapter = new ArrayAdapter<>(this, R.layout.spinner_dropdown, R.id.spinner_item_label, viewModel.getAllStoreNames());
@@ -83,23 +87,41 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             @Override
             public void onChanged(List<Store> stores) {
                 try {
+                    // create default store if there are no stores
                     if(stores.size() == 0) {
-                        Store fillerStore = new Store(1, "Unnamed", 0);
+                        Store fillerStore = new Store(1, "Unnamed");
                         long id = viewModel.insert(fillerStore);
                         if(id > 0) {
                             fillerStore.setId(id);
                             currentStore = new Store(fillerStore);
                         }
-
                     }
+                    // display current store if there are still stores left; otherwise, display last store
                     else {
                         currentStore = (currentStore != null) ? currentStore : stores.get(stores.size() - 1);
                     }
-
+                    // set list label
                     STORE_NAME = currentStore.getStoreName();
                     finalAdapter.clear();
                     finalAdapter.addAll(viewModel.getAllStoreNames());
+                    spinner.setSelection(finalAdapter.getPosition(STORE_NAME));
+                    // set item list
                     itemAdapter.setItemList(viewModel.getItemList(STORE_NAME));
+                    // display total price of current list
+                    displayTotalPrice(itemAdapter.getItemList());
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        viewModel.observeAllItems(STORE_NAME).observe(this, new Observer<List<Item>>() {
+            @Override
+            public void onChanged(List<Item> items) {
+                try {
+                    displayTotalPrice(viewModel.getItemList(STORE_NAME));
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -175,9 +197,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         };
         new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(itemListView);
-
-        // Example of a call to a native method
-        //tv.setText(stringFromJNI());
     }
 
     @Override
@@ -358,20 +377,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         return false;
     }
 
-
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
+    public native double getTotalPrice(Object[] itemArray);
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         ViewModel viewModel = new ViewModel(getApplication());
-        String chosenList = parent.getItemAtPosition(pos).toString();
+        STORE_NAME = parent.getItemAtPosition(pos).toString();
         try {
-            itemAdapter.setItemList(viewModel.getItemList(chosenList));
+            currentStore = viewModel.getGivenStore(STORE_NAME);
+            itemAdapter.setItemList(viewModel.getItemList(STORE_NAME));
+            displayTotalPrice(itemAdapter.getItemList());
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -382,5 +397,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void displayTotalPrice(List<Item> itemList) {
+        TextView totalPriceDisplay = findViewById(R.id.total_price);
+        Item[] itemArray = makeArray(itemList);
+        totalPriceDisplay.setText(getString(R.string.total_price, getTotalPrice(itemArray)));
+    }
+
+    private Item[] makeArray(List<Item> itemList) {
+        Item[] itemArray = new Item[itemList.size()];
+
+        for(int i = 0; i < itemList.size(); i++) {
+            itemArray[i] = new Item(itemList.get(i));
+        }
+
+        return itemArray;
     }
 }
