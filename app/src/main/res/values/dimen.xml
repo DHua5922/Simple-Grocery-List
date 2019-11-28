@@ -3,6 +3,7 @@
     <dimen name="text">20sp</dimen>
     <dimen name="name_display">20sp</dimen>
     <dimen name="price_display">15sp</dimen>
+    <dimen name="total_price">25sp</dimen>
     <dimen name="btn_add_size">75dp</dimen>
 
     <dimen name="item_content_padding">20dp</dimen>
