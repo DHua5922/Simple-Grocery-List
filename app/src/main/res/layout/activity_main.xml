@@ -19,8 +19,6 @@
         android:weightSum="4"
         android:layout_margin="@dimen/btn_ctrl_list_padding"
         app:layout_constraintBottom_toTopOf="@+id/item_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_layout">
 
         <Button
@@ -58,14 +56,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/item_list"
         android:layout_height="0dp"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/item_list_padding"
         android:layout_marginStart="@dimen/item_list_padding"
         android:layout_marginRight="@dimen/item_list_padding"
         android:layout_marginEnd="@dimen/item_list_padding"
         app:layout_constraintBottom_toTopOf="@+id/total_price"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btns_list_control"
         tools:listitem="@layout/item_display">
 
@@ -80,9 +76,7 @@
         android:background="@color/toolbar_add_item_btn"
         android:padding="@dimen/dropdown_padding"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/banner_ad"
         app:layout_constraintTop_toBottomOf="@+id/item_list"/>
 
     <ImageView
@@ -96,5 +90,10 @@
         app:layout_constraintBottom_toTopOf="@+id/total_price"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/add_btn_description"/>
+
+    <include
+        layout="@layout/banner_ad_layout"
+        app:layout_constraintTop_toBottomOf="@+id/total_price">
+    </include>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
