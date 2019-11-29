@@ -12,9 +12,9 @@ public abstract class Dialog {
     private Context context;
     private View dialogLayout;
     
-    public Dialog(Context context, int dialogLayout) {
+    public Dialog(Context context, int dialogLayoutID) {
         setContext(context);
-        setDialogLayout(dialogLayout);
+        setDialogLayout(dialogLayoutID);
     }
 
     public Context getContext() {
@@ -29,8 +29,8 @@ public abstract class Dialog {
         return dialogLayout;
     }
 
-    public void setDialogLayout(int dialogLayout) {
-        this.dialogLayout = LayoutInflater.from(context).inflate(dialogLayout, null);
+    public void setDialogLayout(int dialogLayoutID) {
+        this.dialogLayout = LayoutInflater.from(context).inflate(dialogLayoutID, null);
     }
 
     public TextView getMessageView() {
