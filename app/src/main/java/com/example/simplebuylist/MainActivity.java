@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public static final int ADD_ITEM_REQUEST = 0;
     public static String STORE_NAME = "Unnamed";
     public static Store currentStore;
+    public static final String EXTRA_ACTION = "com.example.simplebuylist.EXTRA_ACTION";
 
     private ItemAdapter itemAdapter;
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         setContentView(R.layout.activity_main);
 
         // remove default toolbar title
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_layout);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ItemEdit.class);
-                intent.putExtra(ItemAdapter.EXTRA_ACTION, "Add Item");
+                intent.putExtra(EXTRA_ACTION, "Add Item");
                 startActivityForResult(intent, ADD_ITEM_REQUEST);
             }
         });
