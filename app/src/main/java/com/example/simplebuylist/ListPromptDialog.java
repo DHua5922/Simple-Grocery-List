@@ -12,11 +12,11 @@ public class ListPromptDialog extends Dialog {
 
     public ListPromptDialog(Context context, int dialogLayoutID) {
         super(context, dialogLayoutID);
-        setInputAutoComplete();
+        autoCompleteTextView = getDialogLayout().findViewById(R.id.input_autocomplete);
     }
 
-    private void setInputAutoComplete() {
-        autoCompleteTextView = getDialogLayout().findViewById(R.id.input_autocomplete);
+    public void fillInputAutoComplete(String text) {
+        autoCompleteTextView.setText(text);
     }
 
     public AutoCompleteTextView getInputAutoComplete() {
