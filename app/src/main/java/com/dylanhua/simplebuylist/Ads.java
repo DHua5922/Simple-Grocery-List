@@ -1,4 +1,4 @@
-package com.example.simplebuylist;
+package com.dylanhua.simplebuylist;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;

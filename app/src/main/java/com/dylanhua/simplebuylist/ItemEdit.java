@@ -1,4 +1,4 @@
-package com.example.simplebuylist;
+package com.dylanhua.simplebuylist;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

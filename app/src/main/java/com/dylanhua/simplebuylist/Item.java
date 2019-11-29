@@ -1,4 +1,4 @@
-package com.example.simplebuylist;
+package com.dylanhua.simplebuylist;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
