@@ -291,6 +291,7 @@ public class DialogAction {
         listPromptDialog.setDropdown(R.layout.dropdown, viewModel.getAllStoreNames());
         listPromptDialog.setHint(R.string.hint_list_name_input);
         listPromptDialog.setMessage(message);
+        listPromptDialog.fillInputAutoComplete(MainActivity.STORE_NAME);
 
         listPromptDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
             @Override
