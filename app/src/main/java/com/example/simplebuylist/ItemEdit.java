@@ -4,15 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 public class ItemEdit extends AppCompatActivity {
 
@@ -25,11 +23,11 @@ public class ItemEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_edit);
 
+        Intent request = getIntent();
+
         nameInput = findViewById(R.id.name_input);
         priceInput = findViewById(R.id.price_input);
         isBoughtCheckBox = findViewById(R.id.checkbox_isBought);
-
-        final Intent request = getIntent();
         if(request.hasExtra(ItemAdapter.EXTRA_ITEM_ID)) {
             nameInput.setText(request.getStringExtra(ItemAdapter.EXTRA_ITEM_NAME));
             priceInput.setText(String.valueOf(request.getDoubleExtra(ItemAdapter.EXTRA_ITEM_PRICE, 0)));
@@ -38,18 +36,10 @@ public class ItemEdit extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        TextView labelActionView = findViewById(R.id.label_action);
-        labelActionView.setText(request.getStringExtra(ItemAdapter.EXTRA_ACTION));
-
-        ImageButton backBtn = findViewById(R.id.back_btn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setResult(RESULT_CANCELED, request);
-                finish();
-            }
-        });
+        toolbar.setTitleTextColor(Color.WHITE);
+        getSupportActionBar().setTitle(request.getStringExtra(MainActivity.EXTRA_ACTION));
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -66,6 +56,11 @@ public class ItemEdit extends AppCompatActivity {
         try {
             if (selectedItem.getItemId() == R.id.overflow_save_changes) {
                 finishItem();
+            }
+            else if(selectedItem.getItemId() == android.R.id.home) {
+                Intent request = getIntent();
+                setResult(RESULT_CANCELED, request);
+                finish();
             }
             return true;
         } catch (IllegalArgumentException e) {
