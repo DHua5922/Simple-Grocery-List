@@ -23,18 +23,21 @@ public class DialogAction {
         dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = "Could not delete " + item.getName();
+                int status = Text.FAIL;
+
                 try {
                     if(itemAdapter.delete(item)) {
-                        Text.printMessage(context, "Item deleted", Text.SUCCESS);
-                    }
-                    else {
-                        Text.printMessage(context, "Could not delete item", Text.FAIL);
+                        message = item.getName() + " deleted";
+                        status = Text.SUCCESS;
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                Text.printMessage(context, message, status);
                 alertDialog.dismiss();
             }
         });
@@ -55,19 +58,22 @@ public class DialogAction {
         dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = "Could not delete " + MainActivity.STORE_NAME;
+                int status = Text.FAIL;
+
                 try {
                     if(viewModel.delete(MainActivity.currentStore)) {
+                        message = MainActivity.STORE_NAME + " has been deleted";
+                        status = Text.SUCCESS;
                         MainActivity.currentStore = null;
-                        Text.printMessage(context, "List deleted", Text.SUCCESS);
-                    }
-                    else {
-                        Text.printMessage(context, "Could not delete this list", Text.FAIL);
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                Text.printMessage(context, message, status);
                 alertDialog.dismiss();
             }
         });
@@ -88,19 +94,22 @@ public class DialogAction {
         dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = "Could not delete all lists";
+                int status = Text.FAIL;
+
                 try {
                     if(viewModel.deleteAll()) {
                         MainActivity.currentStore = null;
-                        Text.printMessage(context, "All lists deleted", Text.SUCCESS);
-                    }
-                    else {
-                        Text.printMessage(context, "Could not delete all lists", Text.FAIL);
+                        message = "All lists deleted";
+                        status = Text.SUCCESS;
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                Text.printMessage(context, message, status);
                 alertDialog.dismiss();
             }
         });
@@ -121,19 +130,22 @@ public class DialogAction {
         dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = "Could not delete all items";
+                int status = Text.FAIL;
+
                 try {
                     if(viewModel.deleteAllItems(MainActivity.STORE_NAME)) {
                         itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
-                        Text.printMessage(context, "All items deleted", Text.SUCCESS);
-                    }
-                    else {
-                        Text.printMessage(context, "Could not delete all items", Text.FAIL);
+                        message = "All items deleted";
+                        status = Text.SUCCESS;
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                Text.printMessage(context, message, status);
                 alertDialog.dismiss();
             }
         });
@@ -154,19 +166,22 @@ public class DialogAction {
         dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = "Could not delete all purchased items";
+                int status = Text.FAIL;
+
                 try {
                     if(viewModel.deleteAllCheckedItems(MainActivity.STORE_NAME)) {
                         itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
-                        Text.printMessage(context, "All purchased items deleted", Text.SUCCESS);
-                    }
-                    else {
-                        Text.printMessage(context, "Could not delete all purchased items", Text.FAIL);
+                        message = "All purchased items deleted";
+                        status = Text.SUCCESS;
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                Text.printMessage(context, message, status);
                 alertDialog.dismiss();
             }
         });
@@ -187,19 +202,22 @@ public class DialogAction {
         dialogBuilder.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = "Could not delete all unpurchased items";
+                int status = Text.FAIL;
+
                 try {
                     if(viewModel.deleteAllUncheckedItems(MainActivity.STORE_NAME)) {
                         itemAdapter.setItemList(viewModel.getItemList(MainActivity.STORE_NAME));
-                        Text.printMessage(context, "All unpurchased items deleted", Text.SUCCESS);
-                    }
-                    else {
-                        Text.printMessage(context, "Could not delete all unpurchased items", Text.FAIL);
+                        message = "All unpurchased items deleted";
+                        status = Text.SUCCESS;
                     }
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                Text.printMessage(context, message, status);
                 alertDialog.dismiss();
             }
         });
@@ -213,14 +231,14 @@ public class DialogAction {
         listPromptDialog.setHint(R.string.hint_list_name_input);
         listPromptDialog.setMessage(message);
 
-        alertDialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+        listPromptDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
             }
         });
 
-        alertDialog.findViewById(R.id.btn_dialog_ok).setOnClickListener(new View.OnClickListener() {
+        listPromptDialog.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String newStoreName = listPromptDialog.getInputAutoComplete().getText().toString();
@@ -274,17 +292,20 @@ public class DialogAction {
         listPromptDialog.setHint(R.string.hint_list_name_input);
         listPromptDialog.setMessage(message);
 
-        alertDialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+        listPromptDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
             }
         });
 
-        alertDialog.findViewById(R.id.btn_dialog_ok).setOnClickListener(new View.OnClickListener() {
+        listPromptDialog.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String newStoreName = listPromptDialog.getInputAutoComplete().getText().toString();
+                String message = "Name cannot be empty";
+                int status = Text.FAIL;
+
                 if(!newStoreName.isEmpty()) {
                     try {
                         Store updatedStore = viewModel.getGivenStore(newStoreName);
@@ -292,45 +313,47 @@ public class DialogAction {
                             updatedStore = new Store(MainActivity.currentStore);
                             updatedStore.setStoreName(newStoreName);
                             if(viewModel.update(updatedStore)) {
+                                message = "Renamed " + MainActivity.STORE_NAME + " to " + newStoreName;
+                                status = Text.SUCCESS;
                                 MainActivity.currentStore = updatedStore;
                                 alertDialog.dismiss();
                             } else {
-                                Text.printMessage(context, "Could not rename this list to " + newStoreName, Text.FAIL);
+                                message = "Could not rename " + MainActivity.STORE_NAME + " to " + newStoreName;
                             }
                         } else {
-                            Text.printMessage(context, newStoreName + " already exists", Text.FAIL);
+                            message = newStoreName + " already exists";
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    Text.printMessage(context, "Name cannot be empty", Text.FAIL);
                 }
+
+                Text.printMessage(context, message, status);
             }
         });
     }
 
     public static void searchName(final Context context, String message, final ItemAdapter itemAdapter, final ViewModel viewModel) throws ExecutionException, InterruptedException {
-        final ListPromptDialog listPromptDialog =
-                new ListPromptDialog(context, R.layout.dialog_list_prompt);
+        final ListPromptDialog listPromptDialog = new ListPromptDialog(context, R.layout.dialog_list_prompt);
         final AlertDialog alertDialog = listPromptDialog.getAlertDialog();
         listPromptDialog.setDropdown(R.layout.dropdown, viewModel.getAllItemNames(MainActivity.STORE_NAME));
         listPromptDialog.setHint(R.string.hint_list_name_input);
         listPromptDialog.setMessage(message);
 
-        alertDialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+        listPromptDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
             }
         });
 
-        alertDialog.findViewById(R.id.btn_dialog_ok).setOnClickListener(new View.OnClickListener() {
+        listPromptDialog.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String nameInput = listPromptDialog.getInputAutoComplete().getText().toString();
+
                 if(!nameInput.isEmpty()) {
                     try {
                         itemAdapter.setItemList(viewModel.getItemsByName(MainActivity.STORE_NAME, nameInput));
@@ -348,23 +371,23 @@ public class DialogAction {
     }
 
     public static void searchKeyword(final Context context, String message, final ItemAdapter itemAdapter, final ViewModel viewModel) {
-        final ListPromptDialog listPromptDialog =
-                new ListPromptDialog(context, R.layout.dialog_list_prompt);
+        final ListPromptDialog listPromptDialog = new ListPromptDialog(context, R.layout.dialog_list_prompt);
         final AlertDialog alertDialog = listPromptDialog.getAlertDialog();
         listPromptDialog.setHint(R.string.hint_list_name_input);
         listPromptDialog.setMessage(message);
 
-        alertDialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+        listPromptDialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
             }
         });
 
-        alertDialog.findViewById(R.id.btn_dialog_ok).setOnClickListener(new View.OnClickListener() {
+        listPromptDialog.getButtonOK().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String keyword = listPromptDialog.getInputAutoComplete().getText().toString();
+
                 if(!keyword.isEmpty()) {
                     try {
                         itemAdapter.setItemList(viewModel.getItemsByKeyword(MainActivity.STORE_NAME, keyword));
@@ -375,7 +398,7 @@ public class DialogAction {
                         e.printStackTrace();
                     }
                 } else {
-                    Text.printMessage(context, "Field cannot be empty", Text.FAIL);
+                    Text.printMessage(context, "Keyword cannot be empty", Text.FAIL);
                 }
             }
         });
