@@ -24,7 +24,6 @@ public class ItemAdapter extends ListAdapter<Item, ItemAdapter.ItemHolder> imple
     private ViewModel viewModel;
     private MainActivity context;
 
-    public static final String EXTRA_ACTION = "com.example.simplebuylist.EXTRA_ACTION";
     public static final String EXTRA_ITEM_ID = "com.example.simplebuylist.EXTRA_ITEM_ID";
     public static final String EXTRA_ITEM_NAME = "com.example.simplebuylist.EXTRA_ITEM_NAME";
     public static final String EXTRA_ITEM_PRICE = "com.example.simplebuylist.EXTRA_ITEM_PRICE";
@@ -218,7 +217,7 @@ public class ItemAdapter extends ListAdapter<Item, ItemAdapter.ItemHolder> imple
         switch (item.getItemId()) {
             case R.id.option_edit_item:
                 Intent intent = new Intent(context, ItemEdit.class);
-                intent.putExtra(EXTRA_ACTION, "Editing " + chosenItem.getName());
+                intent.putExtra(MainActivity.EXTRA_ACTION, "Editing " + chosenItem.getName());
                 intent.putExtra(EXTRA_ITEM_ID, chosenItem.getId());
                 intent.putExtra(EXTRA_ITEM_NAME, chosenItem.getName());
                 intent.putExtra(EXTRA_ITEM_PRICE, chosenItem.getPrice());
