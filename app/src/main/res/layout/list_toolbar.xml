@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/toolbar"
+    style="@style/ToolbarStyle">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/ToolbarStyle">
+    <Spinner
+        android:id="@+id/list_label"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:backgroundTint="@android:color/white">
+    </Spinner>
 
-        <Spinner
-            android:id="@+id/list_label"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:backgroundTint="@android:color/white">
-        </Spinner>
-
-    </androidx.appcompat.widget.Toolbar>
-
-</LinearLayout>
+</androidx.appcompat.widget.Toolbar>
