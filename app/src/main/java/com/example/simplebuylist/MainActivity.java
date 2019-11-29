@@ -20,6 +20,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -42,6 +47,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // initializes Mobile Ads SDK and calls back a completion listener once initialization is complete
+        // (or after a 30-second timeout). This needs to be done only once, ideally at app launch.
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        // display banner ad
+        Ads.displayBannerAd((AdView) findViewById(R.id.banner_ad));
 
         // remove default toolbar title
         Toolbar toolbar = findViewById(R.id.toolbar_layout);

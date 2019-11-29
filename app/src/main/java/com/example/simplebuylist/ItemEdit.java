@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.google.android.gms.ads.AdView;
+
 public class ItemEdit extends AppCompatActivity {
 
     private EditText nameInput;
@@ -23,8 +25,12 @@ public class ItemEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_edit);
 
+        // display banner ad
+        Ads.displayBannerAd((AdView) findViewById(R.id.banner_ad));
+
         Intent request = getIntent();
 
+        // fill in input fields and checkbox with item content
         nameInput = findViewById(R.id.name_input);
         priceInput = findViewById(R.id.price_input);
         isBoughtCheckBox = findViewById(R.id.checkbox_isBought);
@@ -34,10 +40,13 @@ public class ItemEdit extends AppCompatActivity {
             isBoughtCheckBox.setChecked(request.getIntExtra(ItemAdapter.EXTRA_ITEM_IS_BOUGHT, 0) == 1);
         }
 
+        // format action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // set toolbar title
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setTitle(request.getStringExtra(MainActivity.EXTRA_ACTION));
+        // set back button
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -58,6 +67,7 @@ public class ItemEdit extends AppCompatActivity {
                 finishItem();
             }
             else if(selectedItem.getItemId() == android.R.id.home) {
+                // go back to previous page without changing this item
                 Intent request = getIntent();
                 setResult(RESULT_CANCELED, request);
                 finish();
@@ -76,6 +86,7 @@ public class ItemEdit extends AppCompatActivity {
             Text.printMessage(this, "Name cannot be empty", Text.FAIL);
         }
         else {
+            // send updates to this item back to previous page
             double price = Double.parseDouble(priceInput.getText().toString());
             final int IS_BOUGHT = 1;
             final int NOT_BOUGHT = 0;
